@@ -43,7 +43,7 @@ def create_embed(posts, threads, term):
                 name=capitalise(
                     'Post in "%s" by %s' % (threads[i]["title"], post["name"])
                     ,searchtext),
-                value="[%s](%s)" % 
+                value="[%s](%s)" %
                     (highlight(trunc_to(50, post["blurb"]), searchtext),
                     feu_post_base.format(post["topic_id"], post["post_number"])),
                 inline=False)
@@ -140,6 +140,16 @@ async def doot():
 <:doot:324593825815461889> <:doot:324593825815461889> :trumpet: :trumpet: :trumpet: <:doot:324593825815461889> :trumpet: :trumpet: :trumpet: <:doot:324593825815461889> :trumpet: :trumpet: :trumpet: <:doot:324593825815461889> :trumpet:""")
     else:
         await bot.upload("./DOOT.png")
+
+@bot.command()
+async def ea():
+    """EVERYTHING ASSEMBLER"""
+    everythingassemblerstring = """``` _____                 _   _   _            _____                   _   _
+|   __|_ _ ___ ___ _ _| |_| |_|_|___ ___   |  _  |___ ___ ___ _____| |_| |___ ___
+|   __| | | -_|  _| | |  _|   | |   | . |  |     |_ -|_ -| -_|     | . | | -_|  _|
+|_____|\_/|___|_| |_  |_| |_|_|_|_|_|_  |  |__|__|___|___|___|_|_|_|___|_|___|_|
+                  |___|             |___|```"""
+    await bot.say(everythingassemblerstring)
 
 token = os.environ.get('TOKEN', default=None)
 if token is None:
