@@ -67,13 +67,42 @@ class Helpful:
 
     def __init__(self, bot):
         self.bot = bot
+        self.port = bot.listen('on_message')(self.port)
 
+    @bot.command(pass_context = True)
+    async def mod(self, ctx, rule_num, *, link):
+        """!mod <rule number> <link to objectionable message>"""
+        FEU_id = "144670830150811649"
+        if ctx.message.server is None or ctx.message.server.id == FEU_id:
+            await self.bot.send_message(ctx.message.author, "Your request for moderation was successful.")
+            if ctx.message.server is not None:
+                await self.bot.delete_message(ctx.message)
+            mod_channel = self.bot.get_channel("650911156277477377")
+            paladins = discord.utils.get(ctx.message.server.roles, id="145992793796378624").mention
+            await self.bot.send_message(mod_channel, "%s, moderation request received by user %s: Rule %s, at <%s>." % (paladins, ctx.message.author.name, rule_num, link))
+        else:
+            await self.bot.say("Moderation features are for FEU only.")
+            
+    @bot.command()
+    async def howtomod(self):
+        """Gives information on how to use the !mod command."""
+        await self.bot.say("First, have Developer Mode enabled (Settings -> Appearance -> Developer Mode).")
+        await self.bot.say("Then, click the `...` by the offending message, and click \"Copy Link\".")
+        await self.bot.say("Then simple say !mod <n> <link>, where <n> is the rule it violates, and <link> is the pasted link to the message.")
+        await self.bot.say("If you do not have Developer Mode, you may instead of a link, write a short description of where the infraction took place, and by who.")
+        await self.bot.say("Note that after requesting moderation, the message requesting moderation will be removed.")
 
     @bot.command()
     async def goldmine(self):
         """everything you ever wanted"""
         embed=discord.Embed(title="Unified FE Hacking Dropbox", url='https://www.dropbox.com/sh/xl73trcck2la799/AAAMdpNSGQWEzYkLEQEiEhGFa?dl=0', description="All the hacking resources you could ever need, in one place", color=0xefba01)
         # embed.set_thumbnail(url='http://i.imgur.com/Bg5NSga.png')
+        await self.bot.say(embed=embed)
+
+    @bot.command(aliases=["repo"])
+    async def repository(self):
+        """graphics for you"""
+        embed=discord.Embed(title="Emblem Anims", url='https://emblem-anims.herokuapp.com/', description="Get your animations here (credits missing on some, check just in case!)", color=0x4286f4)
         await self.bot.say(embed=embed)
 
     @bot.command()
@@ -126,6 +155,14 @@ class Helpful:
         if rolled <= num: await self.bot.say("HIT (%d)" % rolled)
         else: await self.bot.say("MISS (%d)" % rolled)
 
+    @bot.command(aliases = ['die'])
+    async def rollDie(self, n : int):
+        if n <= 0:
+            await self.bot.say("Specify a positive integer.")
+            return
+        res = random.randrange(n) + 1
+        await self.bot.say(str(res))
+
     @bot.command()
     async def search(self, *, term):
         """search feu"""
@@ -159,6 +196,11 @@ class Helpful:
         embed=discord.Embed(title="Fire Emblem Hacking Ultimate Tutorial v2", url='https://tutorial.feuniverse.us/', description="How to do everything with Event Assembler buildfiles", color=0x40caf2)
         await self.bot.say(embed=embed)
 
+    async def port(self, msg):
+        if str(msg.author.id) != "149576374984638464": return
+        if 'PORT' in msg.content.upper():
+            pass
+            # await self.bot.send_message(msg.channel, '```I think you mean MUG```')
 
 def setup(bot):
     bot.add_cog(Helpful(bot))

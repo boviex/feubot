@@ -21,9 +21,42 @@ class Memes:
         await self.bot.upload("tiki.gif")
 
     @bot.command()
+    async def orbit(self):
+        """my tiki's"""
+        await self.bot.upload("Tikis_in_orbit.png")
+
+    @bot.command()
     async def writing(self):
         """get it in writing. in blood."""
         await self.bot.upload("Pelleass_Blood_Pact.png")
+
+    @bot.command(aliases=["wtf"])
+    async def wtfdyjfsamylb(self):
+        """what the fuck did you just fucking say about me you little bitch"""
+        await self.bot.say("""```
+What the fuck did you just fucking say about me, you little bitch? I’ll have you know I graduated top of my class in the FE University, and I’ve been involved in numerous secret raids on Serenes Forest, and I have over 300 confirmed hacks. I am trained in donating to hex and I’m the top debugger in the entire FE Shrine. You are nothing to me but just another breakpoint. I will wipe you the fuck out with precision the likes of which has never been seen before on an ARMv7TDMI, mark my fucking words. You think you can get away with saying that shit to me over the Internet? Think again, fucker. As we speak I am contacting my secret network of backups across the ROM and your link register is being traced right now so you better prepare for the screech, fleshling. The death screech that wipes out the pathetic little thing you call your reskin. You’re fucking dead, kid. I can be anywhere, anytime, and I can crash your rom in over seven hundred ways, and that’s just with FEditor. Not only am I extensively trained in Nightmare, but I have access to the entire arsenal of the Unified FE Hacking Doc and I will use it to its full extent to wipe your miserable map sprite off the face of Magvel, you little shit. If only you could have known what unholy retribution your little “clever” comment was about to bring down upon you, maybe you would have held your fucking tongue. But you couldn’t, you didn’t, and now you’re paying the price, you goddamn idiot. I will shit Erin all over you and you will drown in it. You’re fucking dead, kiddo.
+```""")
+
+    @bot.command(aliases=["ma???a"])
+    async def ma___a(self):
+        """what IS her name anyway"""
+        letters = [x for x in "abcdefghijklmnopqrstuvwyxz"]
+        consonants = [x for x in "bcdfghjklmnpqrstvwxz"]
+        vowels = [x for x in "aeiouy"]
+        infix = random.choice(consonants) + random.choice(letters) + random.choice(vowels)
+        await self.bot.say("I think you mean Ma"+infix+"a!")
+
+    @bot.command()
+    async def evil(self, *args):
+        """Sub-humans."""
+        if len(args) > 0:
+            thing = ' '.join(args)
+            plural = thing[-1] == 's' #TODO: use inflect
+            formatString = '''```\n{1} {0} evil.\n{1} {0} the enemy.\n{1} must be eradicated.```'''
+            verb = "are" if plural else "is"
+            await self.bot.say(formatString.format(verb, thing))
+        else:
+            await self.bot.say("You gotta tell me **what's** evil!")
 
 
     @bot.command()
@@ -31,6 +64,12 @@ class Memes:
         """do something with arch"""
         direction = random.choice([":arrow_down:", ":arrow_up:"])
         await self.bot.say(direction+" with <:arch_mini:230160993299202068>")
+		
+    @bot.command()
+    async def colorz(self):
+        """do something with colorz"""
+        direction = random.choice([":arrow_down:", ":arrow_up:"])
+        await self.bot.say(direction+" with <:colorz:230159530158194688>")
 
 
     @bot.command()
@@ -84,6 +123,9 @@ class Memes:
             elif (lord.lower() == 'ea'):
                 await self.bot.say("`" + lord + " is our bae`")
                 return
+            elif (lord.lower() in ['bm', 'blackmage', 'black mage']):
+                await self.bot.upload("BMis.gif")
+                return
             elif lord[0].lower() in 'bcdfghjklmnpqrstvwxz':
                 blord = 'b'+lord[1:]
             else:
@@ -110,7 +152,7 @@ class Memes:
             "<:elise:235616193065517066>", 
             "<:eliwood:232283812938121217>", 
             "<:elbert:232283825974149120>", 
-            "<:EAmoe:317182514559188994>", 
+            "<:dootthunk:339479700147798016>",  
             "<:doot:324593825815461889>", 
             "<:donate:230166446146191362>", 
             "<:doc:280527122802540544>", 
@@ -119,13 +161,13 @@ class Memes:
             "<:celica:272027128231362571>", 
             "<:BBQ:230169373694885888>", 
             "<:arch_mini:230160993299202068>", 
-            "<:cam_thumb:307559627573428224>", 
+            "<:camthumb:307559627573428224>", 
             "<:dat:292422389197701121>", 
             "<:thighs:294965155819683840>"]
         if len(args) > 0: head = ' '.join(args)
         else: head = random.choice(heads)
         await self.bot.say(head + """
-<:personality:274564774979960832>
+<:personality:385616854451748864>
 <:thighs:294965155819683840>""")
 
     @bot.command()
@@ -151,8 +193,8 @@ class Memes:
     @bot.command(aliases=["eventassembler", "everythingassembler"])
     async def ea(self):
         """EVERYTHING ASSEMBLER"""
-        everythingassemblerstring = """``` _____                 _   _   _         
-|   __|_ _ ___ ___ _ _| |_| |_|_|___ ___ 
+        everythingassemblerstring = """``` _____                 _   _   _
+|   __|_ _ ___ ___ _ _| |_| |_|_|___ ___
 |   __| | | -_|  _| | |  _|   | |   | . |
 |_____|\_/|___|_| |_  |_| |_|_|_|_|_|_  |
                   |___|             |___|
@@ -174,6 +216,11 @@ class Memes:
         await self.bot.upload("./erinyous.gif")
 
     @bot.command()
+    async def slow(self):
+        """It's what I ain't."""
+        await self.bot.upload("./slow.png")
+
+    @bot.command()
     async def fury(self):
         """2 FAST 2 FURYOUS"""
         await self.bot.say("Don't you mean `>>erin`?")
@@ -182,6 +229,11 @@ class Memes:
     async def soa(self):
         """there's your problem"""
         await self.bot.upload("./SoA.png")
+
+    @bot.command()
+    async def hard(self):
+        """HARD"""
+        await self.bot.upload("./hard.png")
 
     #TODO: HUBBA TESTER
     @bot.command()
