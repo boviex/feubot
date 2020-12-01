@@ -151,7 +151,7 @@ if __name__ == "__main__":
         if len(requested) != 0:
             for request in requested:
                 if request in gooflist:
-                    await ctx.channel.send(file=discord.File("./goofs/"+request))
+                    await ctx.channel.send(file=discord.File("./goofs/"+request+".png"))
                 else:
                     await ctx.channel.send("Use >>goofs to see a list of accepted goofs.")
         else:
