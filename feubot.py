@@ -151,7 +151,7 @@ if __name__ == "__main__":
         if len(requested) != 0:
             for request in requested:
                 if request in gooflist:
-                    await ctx.channel.send(file=discord.File("./goofs/"+request+".png"))
+                    await ctx.channel.send(file=discord.File("./goofs/"+request))
                 else:
                     await ctx.channel.send("Use >>goofs to see a list of accepted goofs.")
         else:
@@ -289,6 +289,12 @@ if __name__ == "__main__":
 
 ########################Memes
 
+
+    @bot.command()
+    async def familyfriendly (ctx):
+        """Pooh the berserker"""
+        await ctx.channel.send(file=discord.File("./familyfriendly.png"))                                     
+    
     @bot.command()
     async def cattheft (ctx):
         """gimme"""
