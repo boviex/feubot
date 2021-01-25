@@ -76,4 +76,4 @@ async def on_ready():
 
     
 
-bot.run("NzgxNjA3NjcwNDc3ODgxMzQ0.X8AG3g.6llvD4_Qc5X4ZMDs94OjeVSRwqA")
+bot.run("NzgxNjA3NjcwNDc3ODgxMzQ0.X8AG3g.kXaBbw0y4Vidgp6u2Sjo7IKsFIg")
