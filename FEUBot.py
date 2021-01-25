@@ -19,7 +19,7 @@ def trunc_to(ln, s):
     else: return s[:ln-3] + "..."
 
 
-def create_embed(posts, threads, term):
+def feuSearchEmbed(posts, threads, term):
         feu_search_base = "http://feuniverse.us/search?q=%s"
         feu_post_base = "http://feuniverse.us/t/{}/{}"
 
@@ -61,7 +61,7 @@ async def search(ctx, *, term):
             data = json.loads(query.read().decode())
             posts = data["posts"]
             threads = data["topics"]
-            await ctx.send(embed=create_embed(posts, threads, payload))
+            await ctx.send(embed=feuSearchEmbed(posts, threads, payload))
         except urllib.error.URLError:
             await ctx.send("Error accessing FEU server, please try again later.")
 
@@ -76,4 +76,4 @@ async def on_ready():
 
     
 
-bot.run("NzgxNjA3NjcwNDc3ODgxMzQ0.X8AG3g.kXaBbw0y4Vidgp6u2Sjo7IKsFIg")
+bot.run("NzgxNjA3NjcwNDc3ODgxMzQ0.X8AG3g.03Tu1idkH_hH1AS6oK9op91K_cU")
