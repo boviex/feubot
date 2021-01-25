@@ -1,0 +1,128 @@
+this is feubot.
+
+Helpful:
+  goldmine            everything you ever wanted
+  hit                 Convert 2RN/fates hit to actual chance
+  howtomod            Gives information on how to use the !mod command.
+  mod                 !mod <rule number> <link to objectionable message>
+  mugs                Link to image of all GBAFE mugs.
+  repository          graphics for you
+  roll                rolls hit or miss (e.g. >>hit 50 1rn/2rn[default]/fates)
+  rollDie             
+  search              search feu
+  ut2                 links ultimate tutorial v2
+Memes:
+  arch                do something with arch
+  casual              just play phoenix
+  colorz              do something with colorz
+  createwaifu         :wink:
+  doot                doot doot
+  ea                  EVERYTHING ASSEMBLER
+  erin                ERIN INTENSIFIES
+  evil                Sub-humans.
+  fury                2 FAST 2 FURYOUS
+  goof                show goof
+  goofs               list goofs
+  hard                HARD
+  hubba               discover their true feelings
+  lol                 (lol
+  ma___a              what IS her name anyway
+  orbit               my tiki's
+  reply               r e p l y s o o n
+  slow                It's what I ain't.
+  soa                 there's your problem
+  style               if my style gets in your way
+  whattime            tells the time
+  whois               roy is our boy
+  writing             get it in writing. in blood.
+  wtfdyjfsamylb       what the fuck did you just fucking say about me you lit...
+Reactions:
+  awful               for when someone posts cringe
+  crackers            jumping boat monkeys!
+  creepy              stay away
+  eliwood             :(
+  enough              you wouldn't like me when i'm angry
+  ew                  disgusting
+  ews                 disgusting list
+  F                   Press F to pay respects.
+  fuckingincredible   fuckingincredible.png
+  hector              judges you
+  lel                 lel
+  lyn                 >:(
+  marisa              u srs
+  ok                  ok
+  reee                REEEEEEEEEEEEEEEEEEE
+  spritans            REEE
+  tethys              dancer think
+  uberthink           🤔
+​No Category:
+  3D                  
+  7743                
+  attention           
+  bab                 
+  babberry            
+  babmobile           
+  bless               
+  blitz               
+  donate              you know it
+  ears                
+  edit                
+  fanfic              
+  feditor             
+  fehfix              
+  frenchzane          
+  gotobed             
+  gotonap             
+  greet               
+  greetings           
+  haccp               
+  hackbad             
+  hackradd            
+  hellothere          
+  help                Shows this message.
+  holyshit            
+  hospital            
+  hwat                
+  illkillyou          
+  kaga                
+  kek                 
+  kelik               
+  keriku              
+  kirby               
+  klek                
+  mangs               
+  mortis              
+  no                  
+  ohdear              
+  oi                  
+  panic               
+  pavise              
+  pillow              
+  pins                
+  problem             
+  rance               
+  realtalk            
+  report7z            
+  ripcam              
+  speech              
+  stop                
+  strong              
+  test                
+  thanks              
+  theft               
+  thinktwice          
+  thisdivinelightning 
+  topkek              
+  towel               
+  trinity             
+  watercrest          
+  wav2egg             
+  what                
+  wholesome           
+  woosh               
+  work                
+  xander              
+  yeszane             
+  zane                
+  zanesjw             
+  中文                 
