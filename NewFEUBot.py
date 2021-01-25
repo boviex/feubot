@@ -76,4 +76,4 @@ async def on_ready():
 
     
 
-bot.run("NzgxNjA3NjcwNDc3ODgxMzQ0.X8AG3g.03Tu1idkH_hH1AS6oK9op91K_cU")
+bot.run("discordbotkey")
