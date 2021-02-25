@@ -90,7 +90,6 @@ async def on_ready():
         for channel in guild.text_channels:
             text_channel_list.append(channel)
             gen = channel.name
-            print(gen)
             if gen == "general":
                 print ("General detected.")
                 await channel.send("I have awoken!")
