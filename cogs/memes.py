@@ -327,7 +327,7 @@ What the fuck did you just fucking say about me, you little bitch? I’ll have y
          if len(requested) != 0:
              for request in requested:
                 if request in gooflist:
-                    await ctx.send(file=discord.File("./goofs/"+request+".png))
+                    await ctx.send(file=discord.File("./goofs/"+request+".png"))
                 else:
                     await ctx.send("Use >>goofs to see a list of accepted goofs.")
          else:
