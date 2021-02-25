@@ -1,6 +1,7 @@
 import discord
 import os
 from discord.ext import commands
+from discord.utils import find
 import sys, traceback
 from sys import argv
 from dotenv import load_dotenv
@@ -10,6 +11,7 @@ import urllib
 import urllib.request
 import urllib.error
 import json
+import asyncio
 from feubotFormatter import FeubotFormatter
 
 bot = commands.Bot(command_prefix =  "!")
@@ -65,6 +67,16 @@ async def search(ctx, *, term):
         except urllib.error.URLError:
             await ctx.send("Error accessing FEU server, please try again later.")
 
+@bot.event
+async def on_guild_join(self, ctx, guild):
+    general = find(lambda x: x.name == 'general',  guild.text_channels)
+    if general and general.permissions_for(guild.me).send_messages:
+        await ctx.send("I have awoken!")
+        print("I have awoken!")
+    else:
+        print("error with guild")
+
+  
 
 @bot.event
 async def on_ready():
@@ -73,7 +85,14 @@ async def on_ready():
     print(bot.user.id)
     print('------')
     await bot.change_presence(activity=discord.Game(name="Eating some beans."))
-
-    
-
+    text_channel_list = []
+    for guild in bot.guilds:
+        for channel in guild.text_channels:
+            text_channel_list.append(channel)
+            gen = channel.name
+            print(gen)
+            if gen == "general":
+                print ("General detected.")
+                await channel.send("I have awoken!")
+                
 bot.run("")
