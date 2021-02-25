@@ -47,6 +47,12 @@ class Reactions(commands.Cog):
         else:
             await ctx.send(file=discord.File("./disgusting/"+random.choice([a for a in ewlist.values()])))
 
+    @commands.command()
+    async def bonk(self, ctx):
+        "No Horny"
+        bonklist = {a.lower(): a for a in os.listdir("./bonk")}
+        await ctx.send(file=discord.File("./bonk/"+random.choice([a for a in bonklist.values()])))
+
     @commands.command(aliases=["incredible"])
     async def fuckingincredible(self, ctx):###
         """fuckingincredible.png"""

@@ -33,6 +33,7 @@ class Helpful(commands.Cog):
     async def goldmine(self, ctx):
         """everything you ever wanted"""
         embed=discord.Embed(title="Unified FE Hacking Dropbox", url='https://www.dropbox.com/sh/xl73trcck2la799/AAAMdpNSGQWEzYkLEQEiEhGFa?dl=0', description="All the hacking resources you could ever need, in one place", color=0xefba01)
+        # embed.set_thumbnail(url='http://i.imgur.com/Bg5NSga.png')
         await ctx.send(embed=embed)
 
 
