@@ -5,7 +5,7 @@ import re
 import random
 import os
 from sys import argv
-from feubotFormatter import FeubotFormatter
+# from feubotFormatter import FeubotFormatter
 
 
 def setupBot(bot):
@@ -45,9 +45,9 @@ if __name__ == "__main__":
     intents.members = True
 
     if "--debug" in argv:
-        bot = commands.Bot(command_prefix=['##', 'feubeta '], description='this is feubot beta.', intents=intents, help_command = FeubotFormatter(dm_help=True))
+        bot = commands.Bot(command_prefix=['##', 'feubeta '], description='this is feubot beta.', intents=intents) #, help_command = FeubotFormatter(dm_help=True))
     else:
-        bot = commands.Bot(command_prefix=['!', '>>', 'feubot '], description='this is feubot.', intents=intents, help_command = FeubotFormatter(dm_help=True))
+        bot = commands.Bot(command_prefix=['!', '>>', 'feubot '], description='this is feubot.', intents=intents) #, help_command = FeubotFormatter(dm_help=True))
 
     @bot.event
     async def on_ready():
