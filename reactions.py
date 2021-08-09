@@ -2,20 +2,20 @@ import discord
 from discord.ext import commands as bot
 import os, random, re, asyncio
 
-class Reactions:
+class Reactions(bot.Cog):
     """memes but not"""
 
     def __init__(self, bot):
         self.bot = bot
 
     @bot.command()
-    async def ews(self):
+    async def ews(self, ctx):
         """disgusting list"""
         filenameslist = [os.path.splitext(f)[0] for f in os.listdir("./disgusting")]
         await self.bot.say("```"+"\n".join(map(str, filenameslist))+"```")
 
     @bot.command()
-    async def ew(self,*args):
+    async def ew(self, ctx,*args):
         """disgusting"""
         requested = args
         ewlist = {a.lower(): a for a in os.listdir("./disgusting")}
@@ -30,39 +30,39 @@ class Reactions:
                     request_file = file_extension_or_not_pattern.sub(extension, request).lower()
                     if request_file in ewlist:
                         found = True
-                        await self.bot.upload("./disgusting/"+ewlist[request_file])
+                        await ctx.send(file=discord.File("./disgusting/"+ewlist[request_file]))
                 if not found:
                     await self.bot.say("Use >>ews to see a list of accepted names.")
         else:
-            await self.bot.upload("./disgusting/"+random.choice([a for a in ewlist.values()]))
+            await ctx.send(file=discord.File("./disgusting/"+random.choice([a for a in ewlist.values()])))
 
-    @bot.command(aliases=["incredible"])
-    async def fuckingincredible(self):
+    @bot.command()
+    async def fuckingincredible(self, ctx, aliases=["incredible"]):
         """fuckingincredible.png"""
         await self.bot.say("http://i.imgur.com/yt4hXhJ.png")
 
     @bot.command()
-    async def crackers(self):
+    async def crackers(self, ctx):
         """jumping boat monkeys!"""
-        await self.bot.upload("./Holy_crackers.png")
+        await ctx.send(file=discord.File("./Holy_crackers.png"))
 
     @bot.command()
-    async def hector(self):
+    async def hector(self, ctx):
         """judges you"""
-        await self.bot.upload("./hectorpc.png")
+        await ctx.send(file=discord.File("./hectorpc.png"))
 
     @bot.command()
-    async def eliwood(self):
+    async def eliwood(self, ctx):
         """:("""
-        await self.bot.upload("./eliwoodpc.jpg")
+        await ctx.send(file=discord.File("./eliwoodpc.jpg"))
 
     @bot.command()
-    async def lyn(self):
+    async def lyn(self, ctx):
         """>:("""
-        await self.bot.upload("./lynpc.png")
+        await ctx.send(file=discord.File("./lynpc.png"))
 
     @bot.command()
-    async def spritans(self):
+    async def spritans(self, ctx):
         """REEE"""
         await self.bot.say("muh")
         await asyncio.sleep(1)
@@ -72,7 +72,7 @@ class Reactions:
 
 
     @bot.command()
-    async def reee(self):
+    async def reee(self, ctx):
         """REEEEEEEEEEEEEEEEEEE"""
         action = random.choice([1,2])
         if action==1:
@@ -84,63 +84,63 @@ class Reactions:
             await asyncio.sleep(0.25)
             await self.bot.edit_message(msg, "***REEE" + "E"*(i+1) + "***")
         else:
-            await self.bot.upload("./reee.gif")           
+            await ctx.send(file=discord.File("./reee.gif"))           
 
-    @bot.command(aliases=["f", 'respects'])
-    async def F(self):
+    @bot.command()
+    async def F(self, ctx):
         """Press F to pay respects."""
-        await self.bot.upload("./respects.jpeg")
+        await ctx.send(file=discord.File("./respects.jpeg"))
 
     @bot.command()
-    async def enough(self):
+    async def enough(self, ctx):
         """you wouldn't like me when i'm angry"""
-        await self.bot.upload("./enough.png")
+        await ctx.send(file=discord.File("./enough.png"))
 
     @bot.command()
-    async def creepy(self):
+    async def creepy(self, ctx):
         """stay away"""
-        await self.bot.upload("./creepy.png")
+        await ctx.send(file=discord.File("./creepy.png"))
 
     @bot.command()
-    async def tethys(self):
+    async def tethys(self, ctx):
         """dancer think"""
-        await self.bot.upload("./tethys.png")
+        await ctx.send(file=discord.File("./tethys.png"))
 
     @bot.command()
-    async def marisa(self):
+    async def marisa(self, ctx):
         """u srs"""
-        await self.bot.upload("./marisa.png")
+        await ctx.send(file=discord.File("./marisa.png"))
 
     @bot.command()
-    async def lel(self):
+    async def lel(self, ctx):
         """lel"""
         img=random.choice(["./lel.png","./lel2.png"])
-        await self.bot.upload(img)
-
-    @bot.command(pass_context=True, hidden=True)
-    async def approve(self, ctx):
-        pid = str(ctx.message.author.id)
-        if pid == "171863408822452224":
-            await self.bot.upload('./approved.png')
-        elif pid == '59462571601702912':
-            await self.bot.upload('./Letha_Seal_of_Approval.png')    
-        else:
-            await self.bot.upload('./FEU_Seal.png')
-
-    @bot.command(aliases=["OK"])
-    async def ok(self):
-        """ok"""
-        await self.bot.upload("./ok.png")
+        await ctx.send(file=discord.File(img))
 
     @bot.command()
-    async def uberthink(self):
+    async def approve(self, ctx, pass_context=True, hidden=True):
+        pid = str(ctx.message.author.id)
+        if pid == 171863408822452224:
+            await ctx.send(file=discord.File('./approved.png'))
+        elif pid == '59462571601702912':
+            await ctx.send(file=discord.File('./Letha_Seal_of_Approval.png'))    
+        else:
+            await ctx.send(file=discord.File('./FEU_Seal.png'))
+
+    @bot.command()
+    async def ok(self, ctx, aliases=["OK"]):
+        """ok"""
+        await ctx.send(file=discord.File("./ok.png"))
+
+    @bot.command()
+    async def uberthink(self, ctx):
         """🤔"""
-        await self.bot.upload("./uberthink.gif")
+        await ctx.send(file=discord.File("./uberthink.gif"))
 		
-    @bot.command(aliases=["awfuldisplay"])
-    async def awful(self):
+    @bot.command()
+    async def awful(self, ctx, aliases=["awfuldisplay"]):
         """for when someone posts cringe"""
-        await self.bot.upload("./awful.jpg")
+        await ctx.send(file=discord.File("./awful.jpg"))
 
 def setup(bot):
     bot.add_cog(Reactions(bot))

@@ -5,21 +5,16 @@ import re
 import random
 import os
 from sys import argv
-
 from feubotFormatter import FeubotFormatter
 
+
 def setupBot(bot):
-    import helpful, memes, reactions, undelete, other
-    bot.remove_cog("Reactions")
-    bot.remove_cog("Memes")
-    bot.remove_cog("Helpful")
-    bot.remove_cog("UndeleteCog")
-    bot.remove_cog("Other")
+    import helpful, memes, reactions, other#, undelete
     reactions.setup(bot)
     memes.setup(bot)
     helpful.setup(bot)
-    undelete.setup(bot)
-    other.setup(bot)
+    # undelete.setup(bot)
+    # other.setup(bot)
     #TODO: Stuff like bot.other = bot.get_cog("Other") and such. Then initialize debug's "self" to be bot.
 
     bot.remove_command('debug')
@@ -36,19 +31,23 @@ def setupBot(bot):
         try:
             exec(arg)
         except SystemExit:
-            await bot.say("I tried to quit().")
+            await bot.send("I tried to quit().")
         finally:
             sys.stdout = old_stdout
         output = redirected_output.getvalue()
         output = "No output." if not output else output
-        await bot.say(output)
+        await bot.send(output)
 
 
 if __name__ == "__main__":
+
+    intents = discord.Intents.default()
+    intents.members = True
+
     if "--debug" in argv:
-        bot = commands.Bot(command_prefix=['##', 'feubeta '], description='this is feubot beta.', formatter = FeubotFormatter())
+        bot = commands.Bot(command_prefix=['##', 'feubeta '], description='this is feubot beta.', intents=intents, help_command = FeubotFormatter(dm_help=True))
     else:
-        bot = commands.Bot(command_prefix=['!', '>>', 'feubot '], description='this is feubot.', formatter = FeubotFormatter())
+        bot = commands.Bot(command_prefix=['!', '>>', 'feubot '], description='this is feubot.', intents=intents, help_command = FeubotFormatter(dm_help=True))
 
     @bot.event
     async def on_ready():
@@ -56,22 +55,22 @@ if __name__ == "__main__":
         print(bot.user.name)
         print(bot.user.id)
         print('------')
-        await bot.change_presence(game=discord.Game(name="Reading the doc!"))
+        await bot.change_presence(activity=discord.Game(name="Reading the doc!"))
 
     @bot.add_listener
-    async def on_command_error(error, ctx):
+    async def on_command_error(ctx, error):
         if type(error) == commands.CheckFailure:
             pass
         elif type(error) == commands.CommandNotFound:
             pass
         else:
-            await bot.send_message(ctx.message.channel, error)
+            await ctx.message.channel.send(error)
 
     @bot.command()
-    async def donate():
+    async def donate(ctx):
         """you know it"""
-        await bot.say("https://www.patreon.com/theFEUfund")
-        await bot.say("https://donorbox.org/donate-to-circles")
+        await ctx.send("https://www.patreon.com/theFEUfund")
+        await ctx.send("https://donorbox.org/donate-to-circles")
 
     token = os.environ.get('TOKEN', default=None)
     if token is None:

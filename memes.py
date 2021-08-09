@@ -2,90 +2,90 @@ import discord
 from discord.ext import commands as bot
 import os, random, re, asyncio
 
-class Memes:
+class Memes(bot.Cog):
     """only the dankest"""
 
     def __init__(self, bot):
         self.bot = bot
 
     @bot.command()
-    async def reply(self):
+    async def reply(self, ctx):
         """r e p l y s o o n"""
-        await self.bot.say("reply :soon: :smile:")
+        await ctx.send("reply :soon: :smile:")
 
     @bot.command()
-    async def whattime(self):
+    async def whattime(self, ctx):
         """tells the time"""
-        await self.bot.say("`it's tiki time`")
+        await ctx.send("`it's tiki time`")
         # await asyncio.sleep(1)
-        await self.bot.upload("tiki.gif")
+        await ctx.send(file=discord.File("tiki.gif"))
 
     @bot.command()
-    async def orbit(self):
+    async def orbit(self, ctx):
         """my tiki's"""
-        await self.bot.upload("Tikis_in_orbit.png")
+        await ctx.send(file=discord.File("Tikis_in_orbit.png"))
 
     @bot.command()
-    async def writing(self):
+    async def writing(self, ctx):
         """get it in writing. in blood."""
-        await self.bot.upload("Pelleass_Blood_Pact.png")
+        await ctx.send(file=discord.File("Pelleass_Blood_Pact.png"))
 
     @bot.command(aliases=["wtf"])
-    async def wtfdyjfsamylb(self):
+    async def wtfdyjfsamylb(self, ctx):
         """what the fuck did you just fucking say about me you little bitch"""
-        await self.bot.say("""```
+        await ctx.send("""```
 What the fuck did you just fucking say about me, you little bitch? I’ll have you know I graduated top of my class in the FE University, and I’ve been involved in numerous secret raids on Serenes Forest, and I have over 300 confirmed hacks. I am trained in donating to hex and I’m the top debugger in the entire FE Shrine. You are nothing to me but just another breakpoint. I will wipe you the fuck out with precision the likes of which has never been seen before on an ARMv7TDMI, mark my fucking words. You think you can get away with saying that shit to me over the Internet? Think again, fucker. As we speak I am contacting my secret network of backups across the ROM and your link register is being traced right now so you better prepare for the screech, fleshling. The death screech that wipes out the pathetic little thing you call your reskin. You’re fucking dead, kid. I can be anywhere, anytime, and I can crash your rom in over seven hundred ways, and that’s just with FEditor. Not only am I extensively trained in Nightmare, but I have access to the entire arsenal of the Unified FE Hacking Doc and I will use it to its full extent to wipe your miserable map sprite off the face of Magvel, you little shit. If only you could have known what unholy retribution your little “clever” comment was about to bring down upon you, maybe you would have held your fucking tongue. But you couldn’t, you didn’t, and now you’re paying the price, you goddamn idiot. I will shit Erin all over you and you will drown in it. You’re fucking dead, kiddo.
 ```""")
 
     @bot.command(aliases=["ma???a"])
-    async def ma___a(self):
+    async def ma___a(self, ctx):
         """what IS her name anyway"""
         letters = [x for x in "abcdefghijklmnopqrstuvwyxz"]
         consonants = [x for x in "bcdfghjklmnpqrstvwxz"]
         vowels = [x for x in "aeiouy"]
         infix = random.choice(consonants) + random.choice(letters) + random.choice(vowels)
-        await self.bot.say("I think you mean Ma"+infix+"a!")
+        await ctx.send("I think you mean Ma"+infix+"a!")
 
     @bot.command()
-    async def evil(self, *args):
+    async def evil(self, ctx, *args):
         """Sub-humans."""
         if len(args) > 0:
             thing = ' '.join(args)
             plural = thing[-1] == 's' #TODO: use inflect
             formatString = '''```\n{1} {0} evil.\n{1} {0} the enemy.\n{1} must be eradicated.```'''
             verb = "are" if plural else "is"
-            await self.bot.say(formatString.format(verb, thing))
+            await ctx.send(formatString.format(verb, thing))
         else:
-            await self.bot.say("You gotta tell me **what's** evil!")
+            await ctx.send("You gotta tell me **what's** evil!")
 
 
     @bot.command()
-    async def arch(self):
+    async def arch(self, ctx):
         """do something with arch"""
         direction = random.choice([":arrow_down:", ":arrow_up:"])
-        await self.bot.say(direction+" with <:arch_mini:230160993299202068>")
+        await ctx.send(direction+" with <:arch_mini:230160993299202068>")
 		
     @bot.command()
-    async def colorz(self):
+    async def colorz(self, ctx):
         """do something with colorz"""
         direction = random.choice([":arrow_down:", ":arrow_up:"])
-        await self.bot.say(direction+" with <:colorz:230159530158194688>")
+        await ctx.send(direction+" with <:colorz:230159530158194688>")
 
 
     @bot.command()
-    async def style(self):
+    async def style(self, ctx):
         """if my style gets in your way"""
         img = random.choice(["styleRD.gif", "stylePoR.jpeg"])
-        await self.bot.upload(img)
+        await ctx.send(file=discord.File(img))
 
     @bot.command()
-    async def goofs(self):
+    async def goofs(self, ctx):
         """list goofs"""
         filenameslist = [os.path.splitext(f)[0] for f in os.listdir("./goofs")]
-        await self.bot.say("```"+"\n".join(map(str, filenameslist))+"```")
+        await ctx.send("```"+"\n".join(map(str, filenameslist))+"```")
 
     @bot.command()
-    async def goof(self,*args):
+    async def goof(self, ctx, *args):
         """show goof"""
         requested = args
         gooflist = {a.lower(): a for a in os.listdir("./goofs")}
@@ -100,40 +100,40 @@ What the fuck did you just fucking say about me, you little bitch? I’ll have y
                     request_file = file_extension_or_not_pattern.sub(extension, request).lower()
                     if request_file in gooflist:
                         found = True
-                        await self.bot.upload("./goofs/"+gooflist[request_file])
+                        await ctx.send(file=discord.File("./goofs/"+gooflist[request_file]))
                 if not found:
-                    await self.bot.say("Use >>goofs to see a list of accepted goofs.")
+                    await ctx.send("Use >>goofs to see a list of accepted goofs.")
         else:
-            await self.bot.upload("./goofs/"+random.choice([a for a in gooflist.values()]))
+            await ctx.send(file=discord.File("./goofs/"+random.choice([a for a in gooflist.values()])))
 
     @bot.command()
-    async def whois(self,*args):
+    async def whois(self, ctx, *args):
         """roy is our boy"""
         if len(args) > 0:
             lord = ' '.join(args)
             if (lord.lower() in ['circles','circleseverywhere']):
-                await self.bot.say(lord + " is my dad")
+                await ctx.send(lord + " is my dad")
                 return
             elif (lord.lower() == 'feditor'):
-                await self.bot.say("`" + lord + " a shit`")
+                await ctx.send("`" + lord + " a shit`")
                 return
             elif (lord.lower() == 'feubot'):
-                await self.bot.say("That's me, silly!")
+                await ctx.send("That's me, silly!")
                 return
             elif (lord.lower() == 'ea'):
-                await self.bot.say("`" + lord + " is our bae`")
+                await ctx.send("`" + lord + " is our bae`")
                 return
             elif (lord.lower() in ['bm', 'blackmage', 'black mage']):
-                await self.bot.upload("BMis.gif")
+                await ctx.send(file=discord.File("BMis.gif"))
                 return
             elif lord[0].lower() in 'bcdfghjklmnpqrstvwxz':
                 blord = 'b'+lord[1:]
             else:
                 blord = 'b'+lord
-            await self.bot.say(lord + " is our " + blord)
+            await ctx.send(lord + " is our " + blord)
 
     @bot.command()
-    async def createwaifu(self,*args):
+    async def createwaifu(self, ctx, *args):
         """:wink:"""
         heads = [
             "<:zigludo:252132877678936064>", 
@@ -166,32 +166,32 @@ What the fuck did you just fucking say about me, you little bitch? I’ll have y
             "<:thighs:294965155819683840>"]
         if len(args) > 0: head = ' '.join(args)
         else: head = random.choice(heads)
-        await self.bot.say(head + """
+        await ctx.send(head + """
 <:personality:385616854451748864>
 <:thighs:294965155819683840>""")
 
     @bot.command()
-    async def doot(self):
+    async def doot(self, ctx):
         """doot doot"""
         flip = random.choice([0,1])
         if flip ==1:
-            await self.bot.say("""<:doot:324593825815461889> <:doot:324593825815461889> :trumpet: :trumpet: :trumpet: <:doot:324593825815461889> :trumpet: :trumpet: :trumpet: <:doot:324593825815461889> :trumpet: :trumpet: <:doot:324593825815461889> <:doot:324593825815461889> <:doot:324593825815461889>
+            await ctx.send("""<:doot:324593825815461889> <:doot:324593825815461889> :trumpet: :trumpet: :trumpet: <:doot:324593825815461889> :trumpet: :trumpet: :trumpet: <:doot:324593825815461889> :trumpet: :trumpet: <:doot:324593825815461889> <:doot:324593825815461889> <:doot:324593825815461889>
 <:doot:324593825815461889> :trumpet: <:doot:324593825815461889> :trumpet: <:doot:324593825815461889> :trumpet: <:doot:324593825815461889> :trumpet: <:doot:324593825815461889> :trumpet: <:doot:324593825815461889> :trumpet: :trumpet: <:doot:324593825815461889> :trumpet:
 <:doot:324593825815461889> :trumpet: <:doot:324593825815461889> :trumpet: <:doot:324593825815461889> :trumpet: <:doot:324593825815461889> :trumpet: <:doot:324593825815461889> :trumpet: <:doot:324593825815461889> :trumpet: :trumpet: <:doot:324593825815461889> :trumpet:
 <:doot:324593825815461889> :trumpet: <:doot:324593825815461889> :trumpet: <:doot:324593825815461889> :trumpet: <:doot:324593825815461889> :trumpet: <:doot:324593825815461889> :trumpet: <:doot:324593825815461889> :trumpet: :trumpet: <:doot:324593825815461889> :trumpet:
 <:doot:324593825815461889> <:doot:324593825815461889> :trumpet: :trumpet: :trumpet: <:doot:324593825815461889> :trumpet: :trumpet: :trumpet: <:doot:324593825815461889> :trumpet: :trumpet: :trumpet: <:doot:324593825815461889> :trumpet:""")
         else:
-            await self.bot.upload("./DOOT.png")
+            await ctx.send(file=discord.File("./DOOT.png"))
 
     @bot.command(aliases=["(lol"])
-    async def lol(self):
+    async def lol(self, ctx):
         """(lol"""
         flip = random.choice([0,1])
-        if flip==1: await self.bot.upload("./Water_lol.png")
-        else: await self.bot.upload("./Water_lol2.png")
+        if flip==1: await ctx.send(file=discord.File("./Water_lol.png"))
+        else: await ctx.send(file=discord.File("./Water_lol2.png"))
 
     @bot.command(aliases=["eventassembler", "everythingassembler"])
-    async def ea(self):
+    async def ea(self, ctx):
         """EVERYTHING ASSEMBLER"""
         everythingassemblerstring = """``` _____                 _   _   _
 |   __|_ _ ___ ___ _ _| |_| |_|_|___ ___
@@ -202,38 +202,38 @@ What the fuck did you just fucking say about me, you little bitch? I’ll have y
 |  _  |___ ___ ___ _____| |_| |___ ___
 |     |_ -|_ -| -_|     | . | | -_|  _|
 |__|__|___|___|___|_|_|_|___|_|___|_|```"""
-        await self.bot.say(everythingassemblerstring)
+        await ctx.send(everythingassemblerstring)
 
     @bot.command()
-    async def casual(self):
+    async def casual(self, ctx):
         """just play phoenix"""
         barflist = os.listdir("./casual")
-        await self.bot.upload("./casual/"+random.choice(barflist))
+        await ctx.send(file=discord.File("./casual/"+random.choice(barflist)))
 
     @bot.command()
-    async def erin(self):
+    async def erin(self, ctx):
         """ERIN INTENSIFIES"""
-        await self.bot.upload("./erinyous.gif")
+        await ctx.send(file=discord.File("./erinyous.gif"))
 
     @bot.command()
-    async def slow(self):
+    async def slow(self, ctx):
         """It's what I ain't."""
-        await self.bot.upload("./slow.png")
+        await ctx.send(file=discord.File("./slow.png"))
 
     @bot.command()
-    async def fury(self):
+    async def fury(self, ctx):
         """2 FAST 2 FURYOUS"""
-        await self.bot.say("Don't you mean `>>erin`?")
+        await ctx.send("Don't you mean `>>erin`?")
 
     @bot.command(aliases=["SOA", 'SoA'])
-    async def soa(self):
+    async def soa(self, ctx):
         """there's your problem"""
-        await self.bot.upload("./SoA.png")
+        await ctx.send(file=discord.File("./SoA.png"))
 
     @bot.command()
-    async def hard(self):
+    async def hard(self, ctx):
         """HARD"""
-        await self.bot.upload("./hard.png")
+        await ctx.send(file=discord.File("./hard.png"))
 
     #TODO: HUBBA TESTER
     @bot.command()
@@ -273,7 +273,7 @@ What the fuck did you just fucking say about me, you little bitch? I’ll have y
         msg = """{person1} `--{ltr}->` {person2}
 {person1} `<-{rtl}--` {person2}```
 {reaction}```""".format(person1=person1,person2=person2,ltr=ltr,rtl=rtl,reaction=reaction)
-        await self.bot.say(msg)
+        await ctx.send(msg)
 
 def setup(bot):
     bot.add_cog(Memes(bot))
