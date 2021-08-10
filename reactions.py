@@ -12,7 +12,7 @@ class Reactions(bot.Cog):
     async def ews(self, ctx):
         """disgusting list"""
         filenameslist = [os.path.splitext(f)[0] for f in os.listdir("./disgusting")]
-        await self.bot.say("```"+"\n".join(map(str, filenameslist))+"```")
+        await ctx.send("```"+"\n".join(map(str, filenameslist))+"```")
 
     @bot.command()
     async def ew(self, ctx,*args):
@@ -32,14 +32,14 @@ class Reactions(bot.Cog):
                         found = True
                         await ctx.send(file=discord.File("./disgusting/"+ewlist[request_file]))
                 if not found:
-                    await self.bot.say("Use >>ews to see a list of accepted names.")
+                    await ctx.send("Use >>ews to see a list of accepted names.")
         else:
             await ctx.send(file=discord.File("./disgusting/"+random.choice([a for a in ewlist.values()])))
 
     @bot.command()
     async def fuckingincredible(self, ctx, aliases=["incredible"]):
         """fuckingincredible.png"""
-        await self.bot.say("http://i.imgur.com/yt4hXhJ.png")
+        await ctx.send("http://i.imgur.com/yt4hXhJ.png")
 
     @bot.command()
     async def crackers(self, ctx):
@@ -64,11 +64,11 @@ class Reactions(bot.Cog):
     @bot.command()
     async def spritans(self, ctx):
         """REEE"""
-        await self.bot.say("muh")
+        await ctx.send("muh")
         await asyncio.sleep(1)
-        await self.bot.say("SPRITANS")
+        await ctx.send("SPRITANS")
         await asyncio.sleep(2)
-        await self.bot.say("***REEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE***")
+        await ctx.send("***REEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE***")
 
 
     @bot.command()
@@ -76,7 +76,7 @@ class Reactions(bot.Cog):
         """REEEEEEEEEEEEEEEEEEE"""
         action = random.choice([1,2])
         if action==1:
-            msg = await self.bot.say("*REEE*")
+            msg = await ctx.send("*REEE*")
             await asyncio.sleep(0.5)
             for i in range(1, random.randint(5,10)):
                 await asyncio.sleep(0.25)
