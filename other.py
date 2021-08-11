@@ -1,13 +1,15 @@
+import discord
 from discord.ext import commands
 import os
 from pickle import dump, load
 import pickle
 from functools import reduce
 
-developerIDs = ['91393737950777344', '171863408822452224', '146075481534365697']
+developerIDs = (91393737950777344, 171863408822452224, 146075481534365697)
+
 developerCheck = commands.check(lambda x: x.message.author.id in developerIDs)
 
-class Other:
+class Other(commands.Cog):
     """Commands added for convienience."""
     def __init__(self, bot):
         self.bot = bot
@@ -37,8 +39,8 @@ class Other:
             def makeCommand():
                 localCommand = command # Store for when command changes.
                 @self.bot.command(name = localCommand, cog_name = "Other")
-                async def local():
-                    await self.bot.say(self.dynamicCommands[localCommand])
+                async def local(ctx):
+                    await ctx.send(self.dynamicCommands[localCommand])
             # And call it.
             try:
                 makeCommand()
@@ -47,7 +49,7 @@ class Other:
 
         async def developerError(self, error, ctx):
             if type(error) == commands.CheckFailure:
-                await self.bot.send_message(ctx.message.channel, 'You are not authorized to use that command.')
+                await ctx.send('You are not authorized to use that command.')
         self.addCommand.error(developerError)
         self.removeCommand.error(developerError)
         self.save.error(developerError)
@@ -55,32 +57,32 @@ class Other:
 
     @commands.command(ignore_extra = False)
     @developerCheck
-    async def addCommand(self, command_name, command_content):
+    async def addCommand(self, ctx, command_name, command_content):
         """Admins only. Adds a new simple response command."""
-        if command_name.casefold() in map(lambda x: x.casefold(), self.bot.commands):
-            await self.bot.say("Command name conflicts with existing command.")
+        if str(command_name).casefold() in map(lambda x: str(x).casefold(), self.bot.commands):
+            await ctx.send("Command name conflicts with existing command.")
             return
 
         self.dynamicCommands[command_name] = command_content
         @self.bot.command(name = command_name, cog_name = "Other")
-        async def local():
-            await self.bot.say(command_content)
-        await self.bot.say("Added command \"%s\"." % command_name)
+        async def local(ctx):
+            await ctx.send(command_content)
+        await ctx.send("Added command \"%s\"." % command_name)
 
     @commands.command(ignore_extra = False)
     @developerCheck
-    async def removeCommand(self, command_name):
+    async def removeCommand(self, ctx, command_name):
         """Admins only. Removes a previously defined simple response command."""
         if command_name not in self.dynamicCommands:
-            await self.bot.say("Custom command does not exist.")
+            await ctx.send("Custom command does not exist.")
             return
         del self.dynamicCommands[command_name]
         self.bot.remove_command(command_name)
-        await self.bot.say("Command \"%s\" successfully deleted." % command_name)
+        await ctx.send("Command \"%s\" successfully deleted." % command_name)
 
     @commands.command()
     @developerCheck
-    async def save(self):
+    async def save(self, ctx):
         """Admins only. Saves all of the current custom commands to be loaded when FEUbot is booted."""
         try:
             with open('commands.pickle', 'wb') as f:
@@ -90,20 +92,20 @@ class Other:
             with open('commands_backup.pickle', 'wb') as f:
                 dump(self.dynamicCommands, f, pickle.HIGHEST_PROTOCOL)
         except Exception as e:
-            await self.bot.say("Error saving commands.\nException: %s" % e)
+            await ctx.send("Error saving commands.\nException: %s" % e)
             return
-        await self.bot.say("Commands successfully saved.")
+        await ctx.send("Commands successfully saved.")
 
     @commands.command(name = 'eval')
     @developerCheck
-    async def botEval(self, *, arg):
+    async def botEval(self, ctx, *, arg):
         """Admins only. Evaluate a Python code segment. UNSAFE!!!"""
         fix = lambda f: (lambda x: x(x))(lambda y: f(lambda args: y(y)(args)))
         try:
             res = eval(arg, __builtins__, { "fix" : fix , "reduce" : reduce })
-            await self.bot.say(str(res))
+            await ctx.send(str(res))
         except SystemExit:
-            await self.bot.say("I tried to quit().")
+            await ctx.send("I tried to quit().")
 
 def setup(bot):
     bot.add_cog(Other(bot))

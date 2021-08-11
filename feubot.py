@@ -15,7 +15,7 @@ def setupBot(bot):
     memes.setup(bot)
     helpful.setup(bot)
     # undelete.setup(bot)
-    # other.setup(bot)
+    other.setup(bot)
     #TODO: Stuff like bot.other = bot.get_cog("Other") and such. Then initialize debug's "self" to be bot.
 
     bot.remove_command('debug')
