@@ -4,35 +4,64 @@ import os
 from pickle import dump, load
 import pickle
 from functools import reduce
+import cloudinary, cloudinary.uploader, cloudinary.api, urllib
 
 developerIDs = (91393737950777344, 171863408822452224, 146075481534365697)
-
 developerCheck = commands.check(lambda x: x.message.author.id in developerIDs)
+
+cl_name = os.environ.get('CLOUDNAME', default=None)
+cl_key = os.environ.get('CLOUDKEY', default=None)
+cl_secret = os.environ.get('CLOUDSECRET', default=None)
+
+#assume if name is not set then none are set
+if cl_name is None:
+    cl_name, cl_key, cl_secret = open('./clcreds').read().replace('\n','').split(';')
+
+cloudinary.config( 
+  cloud_name = cl_name, 
+  api_key = cl_key, 
+  api_secret = cl_secret 
+)
 
 class Other(commands.Cog):
     """Commands added for convienience."""
     def __init__(self, bot):
         self.bot = bot
         try:
-            if os.path.exists("commands.pickle"):
-                with open('commands.pickle', 'rb') as f:
-                    self.dynamicCommands = load(f)
-                    if type(self.dynamicCommands) != dict:
-                        raise Exception
-            else:
-                self.dynamicCommands = dict()
+            #use cloud if available, fall back on local (i.e. what is in the repo)
+            web_copy = cloudinary.api.resource("commands.pickle", resource_type='raw')['url']
+            # try:
+            response = urllib.request.urlopen(web_copy)
+            print(response)
+            self.dynamicCommands = load(response)
+            if type(self.dynamicCommands) != dict:
+                raise Exception
+            print("Loaded pickle file from cloud")
+            # except urllib.error.URLError as e:
+            #     print(e)
+            #     if os.path.exists("commands.pickle"):
+            #         with open('commands.pickle', 'rb') as f:
+            #             self.dynamicCommands = load(f)
+            #             if type(self.dynamicCommands) != dict:
+            #                 raise Exception
+            #     else:
+            #         self.dynamicCommands = dict()
         except Exception as e:
+            print(e)
+            print("Attempting to load local backup")
             try:
                 if os.path.exists("commands_backup.pickle"):
                     with open('commands_backup.pickle', 'rb') as f:
                         self.dynamicCommands = load(f)
                         if type(self.dynamicCommands) != dict:
                             raise Exception
+                        print("Backup loaded.")
                 else:
                     print("Corrupted command pickle file! Loading nothing.\nException: %s" % e)
+                    self.dynamicCommands = dict()
             except Exception as e2:
                 print("Corrupted command pickle file and backup! Loading nothing.\nException: %s\n%s" % (e, e2))
-            self.dynamicCommands = dict()
+                self.dynamicCommands = dict()
 
         for command in self.dynamicCommands:
             # Add a layer of function abstraction to store a context-local variable
@@ -88,9 +117,13 @@ class Other(commands.Cog):
             with open('commands.pickle', 'wb') as f:
                 # Pickle the 'data' dictionary using the highest protocol available.
                 dump(self.dynamicCommands, f, pickle.HIGHEST_PROTOCOL)
+                f.close()
+                result = cloudinary.uploader.upload('commands.pickle', resource_type='raw', public_id='commands.pickle', invalidate=True)
 
             with open('commands_backup.pickle', 'wb') as f:
                 dump(self.dynamicCommands, f, pickle.HIGHEST_PROTOCOL)
+                f.close()
+                result = cloudinary.uploader.upload('commands_backup.pickle', resource_type='raw', public_id='commands_backup.pickle', invalidate=True)
         except Exception as e:
             await ctx.send("Error saving commands.\nException: %s" % e)
             return
@@ -106,6 +139,15 @@ class Other(commands.Cog):
             await ctx.send(str(res))
         except SystemExit:
             await ctx.send("I tried to quit().")
+
+    # @commands.command()
+    # async def cltest(self, ctx):
+    #     filename = "test2.txt"
+    #     with open(filename, 'w+') as save_to:
+    #         save_to.write("testing")
+    #         save_to.close()
+    #         result = cloudinary.uploader.upload(filename, resource_type='raw', public_id=filename[2:], invalidate=True)
+    #     print("saved!")
 
 def setup(bot):
     bot.add_cog(Other(bot))
