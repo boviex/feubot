@@ -70,8 +70,9 @@ if __name__ == "__main__":
     @bot.command()
     async def donate(ctx):
         """you know it"""
+        await ctx.send("https://donate.tiltify.com/+fire-emblem-universe/fire-emblem-e3-2021")
         await ctx.send("https://www.patreon.com/theFEUfund")
-        await ctx.send("https://donorbox.org/donate-to-circles")
+        # await ctx.send("https://donorbox.org/donate-to-circles")
 
     token = os.environ.get('TOKEN', default=None)
     if token is None:
