@@ -164,7 +164,7 @@ class Helpful(bot.Cog):
         res = random.randrange(n) + 1
         await ctx.send(str(res))
 
-    @bot.command()
+    @bot.command(aliases=['s'])
     async def search(self, ctx, *, term):
         """search feu"""
         root = "http://feuniverse.us/search.json?q=%s"
