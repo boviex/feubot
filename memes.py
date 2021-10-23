@@ -237,7 +237,7 @@ What the fuck did you just fucking say about me, you little bitch? I’ll have y
 
     #TODO: HUBBA TESTER
     @bot.command()
-    async def hubba(self, person1, person2):
+    async def hubba(self, ctx, person1, person2):
         """discover their true feelings"""
         best_responses = ("About to swoon","Always staring","Carries a torch for","Desires attention","Devoted","Drawn by destiny","Drools openly","Fatal attraction","First love","Has a sweet spot","Head over heels","Heart aflutter","Infatuated","Lives and dies for","Loins afire","Lost in pheromones","Lovey Dovey","Never wants to part","One-track mind","Possessive","Puts on a pedestal","Separation anxiety","Smitten","True love","True sacrificer","Uses pet names","Wants to snuggle","Way too attached","Would give anything","Would hold hands")
         good_responses = ("Admires lifestyle","Always entertained","Best friend","Budding friendship","Comrade","Confessor","Easy to joke with","Feels safe","Finds agreeable","Fun to train with","Good friend","Into the same foods","Like minded","Low maintenance","Not a dull moment","On the same page","Relaxed around","Same wavelength","Sees potential","Shopping buddy","Similar hobbies","Sparring partner","Thinks highly of","Total respect","Totally platonic","Trusts implicitly","Ultimate duo")
