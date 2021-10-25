@@ -167,7 +167,7 @@ What the fuck did you just fucking say about me, you little bitch? I’ll have y
         if len(args) > 0: head = ' '.join(args)
         else: head = random.choice(heads)
         await ctx.send(head + """
-<:personality:385616854451748864>
+<:personality:902077101627289630>
 <:thighs:294965155819683840>""")
 
     @bot.command()
