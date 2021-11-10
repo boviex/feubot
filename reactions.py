@@ -80,9 +80,9 @@ class Reactions(bot.Cog):
             await asyncio.sleep(0.5)
             for i in range(1, random.randint(5,10)):
                 await asyncio.sleep(0.25)
-                await self.bot.edit_message(msg, "**REEE" + "E"*i + "**")
+                await msg.edit(content = "**REEE" + "E"*i + "**")
             await asyncio.sleep(0.25)
-            await self.bot.edit_message(msg, "***REEE" + "E"*(i+1) + "***")
+            await msg.edit(content = "***REEE" + "E"*(i+1) + "***")
         else:
             await ctx.send(file=discord.File("./reee.gif"))           
 
