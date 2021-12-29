@@ -67,6 +67,16 @@ if __name__ == "__main__":
         else:
             await ctx.message.channel.send(error)
 
+    @bot.add_listener
+    async def on_message(message):
+        if message.channel.id == 746515160377851997: #prep_screen id
+            bot_member = message.guild.get_member(bot.user.id)
+            bot_role = discord.utils.get(message.guild.roles, name="Conscripter")
+            if bot_role in bot_member.roles:
+                if "soldier" in message.content.lower():
+                    role = discord.utils.get(message.guild.roles, name="Soldier")
+                    await message.author.add_roles(role)
+
     @bot.command()
     async def donate(ctx):
         """you know it"""
