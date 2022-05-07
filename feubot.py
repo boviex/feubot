@@ -58,6 +58,58 @@ if __name__ == "__main__":
         print('------')
         await bot.change_presence(activity=discord.Game(name="Reading the doc!"))
 
+    @bot.event
+    async def on_raw_reaction_add(payload):
+        messageID = payload.message_id
+        try:
+            with open("BCRoleReaction.txt", "r") as file:
+                reactMessage = int(file.read())
+
+        except (FileNotFoundError, IOError):
+            return
+
+        if messageID == reactMessage:
+            guild_id = payload.guild_id
+            guild = discord.utils.find(lambda g : g.id == guild_id, bot.guilds)
+
+            if payload.emoji.name == "🐱":
+                role = discord.utils.get(guild.roles, name="Catposting")
+            elif payload.emoji.name == "🦎":
+                role = discord.utils.get(guild.roles, name="Lizardposting")
+            elif payload.emoji.name == "🐶":
+                role = discord.utils.get(guild.roles, name="Dogposting")
+
+            if role:
+                member = discord.utils.find(lambda m : m.id == payload.user_id, guild.members)
+                if member:
+                    await member.add_roles(role)
+
+    @bot.event
+    async def on_raw_reaction_remove(payload):
+        messageID = payload.message_id
+        try:
+            with open("BCRoleReaction.txt", "r") as file:
+                reactMessage = int(file.read())
+
+        except (FileNotFoundError, IOError):
+            return
+
+        if messageID == reactMessage:
+            guild_id = payload.guild_id
+            guild = discord.utils.find(lambda g : g.id == guild_id, bot.guilds)
+
+            if payload.emoji.name == "🐱":
+                role = discord.utils.get(guild.roles, name="Catposting")
+            elif payload.emoji.name == "🦎":
+                role = discord.utils.get(guild.roles, name="Lizardposting")
+            elif payload.emoji.name == "🐶":
+                role = discord.utils.get(guild.roles, name="Dogposting")
+
+            if role:
+                member = discord.utils.find(lambda m : m.id == payload.user_id, guild.members)
+                if member:
+                    await member.remove_roles(role)
+
     @bot.add_listener
     async def on_command_error(ctx, error):
         if type(error) == commands.CheckFailure:

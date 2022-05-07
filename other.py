@@ -140,6 +140,24 @@ class Other(commands.Cog):
         except SystemExit:
             await ctx.send("I tried to quit().")
 
+    @commands.command()
+    @developerCheck
+    async def setBCRoleReaction(self, ctx, messageID):
+        """Admins only. Sets a message to grant roles based on reactions"""
+        with open("BCRoleReaction.txt", "w") as file:
+            file.write(str(messageID))
+            await ctx.send("#base_conversations reaction roles are now active!")
+
+    @commands.command()
+    @developerCheck
+    async def unsetBCRoleReaction(self, ctx):
+        """Admins only. Removes the currently set message that grants roles based on reactions"""
+        try:
+            os.remove("BCRoleReaction.txt")
+            await ctx.send("#base_conversations reaction roles are now inactive!")
+        except (FileNotFoundError, IOError):
+            await ctx.send("There is no reaction role message file to delete")
+
     # @commands.command()
     # async def cltest(self, ctx):
     #     filename = "test2.txt"
