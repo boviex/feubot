@@ -7,7 +7,7 @@ from functools import reduce
 import cloudinary, cloudinary.uploader, cloudinary.api, urllib
 import roles
 
-developerIDs = (91393737950777344, 171863408822452224, 146075481534365697)
+developerIDs = (91393737950777344, 171863408822452224, 146075481534365697, 864898945981218837)
 developerCheck = commands.check(lambda x: x.message.author.id in developerIDs)
 
 cl_name = os.environ.get('CLOUDNAME', default=None)
@@ -145,8 +145,11 @@ class Other(commands.Cog):
     @developerCheck
     async def setReactionRole(self, ctx, messageID, role, reaction):
         """Admins only. Sets a reaction role on a specified message"""
-        roles.add_role(str(messageID), reaction, role)
-        await ctx.send(f"{role} for {reaction} reaction set")
+        if messageID.isdigit():
+            roles.add_role(str(messageID), reaction, role)
+            await ctx.send(f"{role} for {reaction} reaction set")
+        else:
+            await ctx.send("Invalid messageID")
 
     @commands.command()
     @developerCheck
@@ -166,8 +169,16 @@ class Other(commands.Cog):
         reactRoles = roles.read_roles()
 
         for a, b in reactRoles.items():
-            messageID_link = await ctx.fetch_message(int(a))
-            return_string += f"<{messageID_link.jump_url}>:\n"
+            try:
+                messageID_link = await ctx.fetch_message(int(a))
+            except (ValueError):
+                messageID_link = None
+
+            if messageID_link:
+                return_string += f"<{messageID_link.jump_url}>:\n"
+            else:
+                return_string += f"{a}:\n"
+
             for x, y in b.items():
                 if (discord.utils.get(ctx.guild.roles, name=y)):
                     return_string += f"        {x}: {y}\n"
