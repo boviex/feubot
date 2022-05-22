@@ -168,22 +168,25 @@ class Other(commands.Cog):
 
         reactRoles = roles.read_roles()
 
-        for a, b in reactRoles.items():
-            try:
-                messageID_link = await ctx.fetch_message(int(a))
-            except (ValueError):
-                messageID_link = None
+        if reactRoles:
+            for a, b in reactRoles.items():
+                try:
+                    messageID_link = await ctx.fetch_message(int(a))
+                except (ValueError):
+                    messageID_link = None
 
-            if messageID_link:
-                return_string += f"<{messageID_link.jump_url}>:\n"
-            else:
-                return_string += f"{a}:\n"
-
-            for x, y in b.items():
-                if (discord.utils.get(ctx.guild.roles, name=y)):
-                    return_string += f"        {x}: {y}\n"
+                if messageID_link:
+                    return_string += f"<{messageID_link.jump_url}>:\n"
                 else:
-                    return_string += f"        {x}: {y} | Does not exist\n"
+                    return_string += f"{a}:\n"
+
+                for x, y in b.items():
+                    if (discord.utils.get(ctx.guild.roles, name=y)):
+                        return_string += f"        {x}: {y}\n"
+                    else:
+                        return_string += f"        {x}: {y} | Does not exist\n"
+        else:
+            return_string = "No reaction roles set"
 
 
         await ctx.send(return_string)
