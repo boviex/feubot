@@ -7,7 +7,7 @@ from functools import reduce
 import cloudinary, cloudinary.uploader, cloudinary.api, urllib
 import roles
 
-developerIDs = (91393737950777344, 171863408822452224, 146075481534365697, 864898945981218837)
+developerIDs = (91393737950777344, 171863408822452224, 146075481534365697)
 developerCheck = commands.check(lambda x: x.message.author.id in developerIDs)
 
 cl_name = os.environ.get('CLOUDNAME', default=None)
