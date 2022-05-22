@@ -31,11 +31,10 @@ def add_role(messageID, reaction, role):
         pickle.dump(roleReact_db, file)
         print(roleReact_db)
 
-def delete_role(messageID, reaction):
+def delete_reaction_role(messageID, reaction):
     roleReact_db = read_roles()
     if not roleReact_db:
-        print("file is empty")
-        return
+        return("There are no role reactions set")
 
     if reaction == "ALL" and messageID in roleReact_db:
         roleReact_db.pop(messageID)

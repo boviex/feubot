@@ -150,12 +150,12 @@ class Other(commands.Cog):
 
     @commands.command()
     @developerCheck
-    async def unsetReactionRole(self, ctx, messageID, role):
+    async def unsetReactionRole(self, ctx, messageID, reaction):
         """
         Admins only. Removes a specified reaction role from a specified message.
         Using "ALL" as the role argument will remove all reaction roles
         """
-        return_string = roles.delete_role(str(messageID), role)
+        return_string = roles.delete_reaction_role(str(messageID), reaction)
         await ctx.send(return_string)
 
     @commands.command()
