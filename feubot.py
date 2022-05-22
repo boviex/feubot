@@ -8,6 +8,7 @@ from sys import argv
 # from feubotFormatter import FeubotFormatter
 from discord.ext.commands import DefaultHelpCommand
 
+import roles
 
 def setupBot(bot):
     import helpful, memes, reactions, other#, undelete
@@ -61,54 +62,30 @@ if __name__ == "__main__":
     @bot.event
     async def on_raw_reaction_add(payload):
         messageID = payload.message_id
-        try:
-            with open("BCRoleReaction.txt", "r") as file:
-                reactMessage = int(file.read())
+        reaction = payload.emoji.name
 
-        except (FileNotFoundError, IOError):
-            return
+        role_name = roles.find_role(str(messageID), reaction)
 
-        if messageID == reactMessage:
-            guild_id = payload.guild_id
-            guild = discord.utils.find(lambda g : g.id == guild_id, bot.guilds)
-
-            if payload.emoji.name == "🐱":
-                role = discord.utils.get(guild.roles, name="Catposting")
-            elif payload.emoji.name == "🦎":
-                role = discord.utils.get(guild.roles, name="Lizardposting")
-            elif payload.emoji.name == "🐶":
-                role = discord.utils.get(guild.roles, name="Dogposting")
-
+        if role_name:
+            guild = discord.utils.find(lambda g : g.id == payload.guild_id, bot.guilds)
+            member = discord.utils.find(lambda m : m.id == payload.user_id, guild.members)
+            role = discord.utils.get(guild.roles, name=role_name)
             if role:
-                member = discord.utils.find(lambda m : m.id == payload.user_id, guild.members)
-                if member:
-                    await member.add_roles(role)
+                await member.add_roles(role)
 
     @bot.event
     async def on_raw_reaction_remove(payload):
         messageID = payload.message_id
-        try:
-            with open("BCRoleReaction.txt", "r") as file:
-                reactMessage = int(file.read())
+        reaction = payload.emoji.name
 
-        except (FileNotFoundError, IOError):
-            return
+        role_name = roles.find_role(str(messageID), reaction)
 
-        if messageID == reactMessage:
-            guild_id = payload.guild_id
-            guild = discord.utils.find(lambda g : g.id == guild_id, bot.guilds)
-
-            if payload.emoji.name == "🐱":
-                role = discord.utils.get(guild.roles, name="Catposting")
-            elif payload.emoji.name == "🦎":
-                role = discord.utils.get(guild.roles, name="Lizardposting")
-            elif payload.emoji.name == "🐶":
-                role = discord.utils.get(guild.roles, name="Dogposting")
-
+        if role_name:
+            guild = discord.utils.find(lambda g : g.id == payload.guild_id, bot.guilds)
+            member = discord.utils.find(lambda m : m.id == payload.user_id, guild.members)
+            role = discord.utils.get(guild.roles, name=role_name)
             if role:
-                member = discord.utils.find(lambda m : m.id == payload.user_id, guild.members)
-                if member:
-                    await member.remove_roles(role)
+                await member.remove_roles(role)
 
     @bot.add_listener
     async def on_command_error(ctx, error):

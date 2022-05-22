@@ -5,6 +5,7 @@ from pickle import dump, load
 import pickle
 from functools import reduce
 import cloudinary, cloudinary.uploader, cloudinary.api, urllib
+import roles
 
 developerIDs = (91393737950777344, 171863408822452224, 146075481534365697)
 developerCheck = commands.check(lambda x: x.message.author.id in developerIDs)
@@ -142,21 +143,39 @@ class Other(commands.Cog):
 
     @commands.command()
     @developerCheck
-    async def setBCRoleReaction(self, ctx, messageID):
-        """Admins only. Sets a message to grant roles based on reactions"""
-        with open("BCRoleReaction.txt", "w") as file:
-            file.write(str(messageID))
-            await ctx.send("#base_conversations reaction roles are now active!")
+    async def setReactionRole(self, ctx, messageID, role, reaction):
+        """Admins only. Sets a reaction role on a specified message"""
+        roles.add_role(str(messageID), reaction, role)
+        await ctx.send(f"{role} for {reaction} reaction set")
 
     @commands.command()
     @developerCheck
-    async def unsetBCRoleReaction(self, ctx):
-        """Admins only. Removes the currently set message that grants roles based on reactions"""
-        try:
-            os.remove("BCRoleReaction.txt")
-            await ctx.send("#base_conversations reaction roles are now inactive!")
-        except (FileNotFoundError, IOError):
-            await ctx.send("There is no reaction role message file to delete")
+    async def unsetReactionRole(self, ctx, messageID, role):
+        """
+        Admins only. Removes a specified reaction role from a specified message.
+        Using "ALL" as the role argument will remove all reaction roles
+        """
+        return_string = roles.delete_role(str(messageID), role)
+        await ctx.send(return_string)
+
+    @commands.command()
+    async def listReactionRoles(self, ctx):
+        """Lists messages with role reactions set along with what roles and reactions are usable"""
+        return_string = ""
+
+        reactRoles = roles.read_roles()
+
+        for a, b in reactRoles.items():
+            messageID_link = await ctx.fetch_message(int(a))
+            return_string += f"<{messageID_link.jump_url}>:\n"
+            for x, y in b.items():
+                if (discord.utils.get(ctx.guild.roles, name=y)):
+                    return_string += f"        {x}: {y}\n"
+                else:
+                    return_string += f"        {x}: {y} | Does not exist\n"
+
+
+        await ctx.send(return_string)
 
     # @commands.command()
     # async def cltest(self, ctx):
