@@ -8,6 +8,7 @@ from sys import argv
 # from feubotFormatter import FeubotFormatter
 from discord.ext.commands import DefaultHelpCommand
 
+import roles
 
 def setupBot(bot):
     import helpful, memes, reactions, other#, undelete
@@ -57,6 +58,34 @@ if __name__ == "__main__":
         print(bot.user.id)
         print('------')
         await bot.change_presence(activity=discord.Game(name="Reading the doc!"))
+
+    @bot.event
+    async def on_raw_reaction_add(payload):
+        messageID = payload.message_id
+        reaction = payload.emoji.name
+
+        role_name = roles.find_role(str(messageID), reaction)
+
+        if role_name:
+            guild = discord.utils.find(lambda g : g.id == payload.guild_id, bot.guilds)
+            member = discord.utils.find(lambda m : m.id == payload.user_id, guild.members)
+            role = discord.utils.get(guild.roles, name=role_name)
+            if role:
+                await member.add_roles(role)
+
+    @bot.event
+    async def on_raw_reaction_remove(payload):
+        messageID = payload.message_id
+        reaction = payload.emoji.name
+
+        role_name = roles.find_role(str(messageID), reaction)
+
+        if role_name:
+            guild = discord.utils.find(lambda g : g.id == payload.guild_id, bot.guilds)
+            member = discord.utils.find(lambda m : m.id == payload.user_id, guild.members)
+            role = discord.utils.get(guild.roles, name=role_name)
+            if role:
+                await member.remove_roles(role)
 
     @bot.add_listener
     async def on_command_error(ctx, error):

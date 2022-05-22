@@ -5,6 +5,7 @@ from pickle import dump, load
 import pickle
 from functools import reduce
 import cloudinary, cloudinary.uploader, cloudinary.api, urllib
+import roles
 
 developerIDs = (91393737950777344, 171863408822452224, 146075481534365697)
 developerCheck = commands.check(lambda x: x.message.author.id in developerIDs)
@@ -139,6 +140,53 @@ class Other(commands.Cog):
             await ctx.send(str(res))
         except SystemExit:
             await ctx.send("I tried to quit().")
+
+    @commands.command()
+    @developerCheck
+    async def setReactionRole(self, ctx, messageID, role, reaction):
+        """Admins only. Sets a reaction role on a specified message"""
+        if messageID.isdigit():
+            roles.add_role(str(messageID), reaction, role)
+            await ctx.send(f"{role} for {reaction} reaction set")
+        else:
+            await ctx.send("Invalid messageID")
+
+    @commands.command()
+    @developerCheck
+    async def unsetReactionRole(self, ctx, messageID, reaction):
+        """
+        Admins only. Removes a specified reaction role from a specified message.
+        Using "ALL" as the role argument will remove all reaction roles
+        """
+        return_string = roles.delete_reaction_role(str(messageID), reaction)
+        await ctx.send(return_string)
+
+    @commands.command()
+    async def listReactionRoles(self, ctx):
+        """Lists messages with role reactions set along with what roles and reactions are usable"""
+        return_string = ""
+
+        reactRoles = roles.read_roles()
+
+        for a, b in reactRoles.items():
+            try:
+                messageID_link = await ctx.fetch_message(int(a))
+            except (ValueError):
+                messageID_link = None
+
+            if messageID_link:
+                return_string += f"<{messageID_link.jump_url}>:\n"
+            else:
+                return_string += f"{a}:\n"
+
+            for x, y in b.items():
+                if (discord.utils.get(ctx.guild.roles, name=y)):
+                    return_string += f"        {x}: {y}\n"
+                else:
+                    return_string += f"        {x}: {y} | Does not exist\n"
+
+
+        await ctx.send(return_string)
 
     # @commands.command()
     # async def cltest(self, ctx):
