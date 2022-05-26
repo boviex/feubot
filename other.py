@@ -169,17 +169,28 @@ class Other(commands.Cog):
         reactRoles = roles.read_roles()
 
         if reactRoles:
+            #Loop through message dictionaries in reactRoles
             for a, b in reactRoles.items():
-                try:
-                    messageID_link = await ctx.fetch_message(int(a))
-                except (ValueError):
-                    messageID_link = None
+                messageID_link = None
+                #loop through server channels to find matching message
+                for guild in self.bot.guilds:
+                    for channel in guild.text_channels:
+                        #Try to get message by ID
+                        try:
+                            messageID_link = await channel.fetch_message(a)
+                            break
+                        except (ValueError):
+                            continue
+                        except (discord.NotFound):
+                            continue
 
+                #Display link to message if possible
                 if messageID_link:
                     return_string += f"<{messageID_link.jump_url}>:\n"
                 else:
                     return_string += f"{a}:\n"
 
+                #Loop through reactions for the current message
                 for x, y in b.items():
                     if (discord.utils.get(ctx.guild.roles, name=y)):
                         return_string += f"        {x}: {y}\n"
