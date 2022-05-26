@@ -168,7 +168,11 @@ class Other(commands.Cog):
 
         reactRoles = roles.read_roles()
 
-        if reactRoles:
+        if not reactRoles:
+            await ctx.send("No reaction roles set")
+            return
+
+        else:
             #Loop through message dictionaries in reactRoles
             for a, b in reactRoles.items():
                 messageID_link = None
@@ -196,9 +200,6 @@ class Other(commands.Cog):
                         return_string += f"        {x}: {y}\n"
                     else:
                         return_string += f"        {x}: {y} | Does not exist\n"
-        else:
-            return_string = "No reaction roles set"
-
 
         await ctx.send(return_string)
 
