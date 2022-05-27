@@ -7,7 +7,7 @@ from functools import reduce
 import cloudinary, cloudinary.uploader, cloudinary.api, urllib
 import roles
 
-developerIDs = (91393737950777344, 171863408822452224, 146075481534365697)
+developerIDs = (91393737950777344, 171863408822452224, 146075481534365697, 864898945981218837)
 developerCheck = commands.check(lambda x: x.message.author.id in developerIDs)
 
 cl_name = os.environ.get('CLOUDNAME', default=None)
@@ -166,7 +166,7 @@ class Other(commands.Cog):
         """Lists messages with role reactions set along with what roles and reactions are usable"""
         return_string = ""
 
-        reactRoles = roles.read_roles()
+        reactRoles = roles.load_roles()
 
         if not reactRoles:
             await ctx.send("No reaction roles set")
