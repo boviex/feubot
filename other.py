@@ -7,7 +7,7 @@ from functools import reduce
 import cloudinary, cloudinary.uploader, cloudinary.api, urllib
 import roles
 
-developerIDs = (91393737950777344, 171863408822452224, 146075481534365697)
+developerIDs = (91393737950777344, 171863408822452224, 146075481534365697, 864898945981218837)
 developerCheck = commands.check(lambda x: x.message.author.id in developerIDs)
 
 cl_name = os.environ.get('CLOUDNAME', default=None)
@@ -166,25 +166,40 @@ class Other(commands.Cog):
         """Lists messages with role reactions set along with what roles and reactions are usable"""
         return_string = ""
 
-        reactRoles = roles.read_roles()
+        reactRoles = roles.load_roles()
 
-        for a, b in reactRoles.items():
-            try:
-                messageID_link = await ctx.fetch_message(int(a))
-            except (ValueError):
+        if not reactRoles:
+            await ctx.send("No reaction roles set")
+            return
+
+        else:
+            #Loop through message dictionaries in reactRoles
+            for a, b in reactRoles.items():
                 messageID_link = None
+                #loop through server channels to find matching message
+                for guild in self.bot.guilds:
+                    for channel in guild.text_channels:
+                        #Try to get message by ID
+                        try:
+                            messageID_link = await channel.fetch_message(a)
+                            break
+                        except (ValueError):
+                            continue
+                        except (discord.NotFound):
+                            continue
 
-            if messageID_link:
-                return_string += f"<{messageID_link.jump_url}>:\n"
-            else:
-                return_string += f"{a}:\n"
-
-            for x, y in b.items():
-                if (discord.utils.get(ctx.guild.roles, name=y)):
-                    return_string += f"        {x}: {y}\n"
+                #Display link to message if possible
+                if messageID_link:
+                    return_string += f"<{messageID_link.jump_url}>:\n"
                 else:
-                    return_string += f"        {x}: {y} | Does not exist\n"
+                    return_string += f"{a}:\n"
 
+                #Loop through reactions for the current message
+                for x, y in b.items():
+                    if (discord.utils.get(ctx.guild.roles, name=y)):
+                        return_string += f"        {x}: {y}\n"
+                    else:
+                        return_string += f"        {x}: {y} | Does not exist\n"
 
         await ctx.send(return_string)
 

@@ -1,24 +1,24 @@
 import pickle
+import cloudinary, urllib
 import sys
 
 ROLE_FILE = "Roles.pickle"
 
-#Internal function for reading and returning the contents of the roles file
-def read_roles():
-    try:
-        open(ROLE_FILE, "rb")
-    except (FileNotFoundError, IOError):
-        open(ROLE_FILE, "wb")
+#Internal function for loading and returning the contents of the roles file
+def load_roles():
+    web_copy = cloudinary.api.resource(ROLE_FILE, resource_type='raw')['url']
+    response = urllib.request.urlopen(web_copy)
+    print(response)
+    roleReact_db = pickle.load(response)
 
-    finally:
-        with open(ROLE_FILE, "rb") as file:
-            if file.read(1):
-                file.seek(0)
-                db = pickle.load(file)
-                return db
+    with open(ROLE_FILE, "wb") as file:
+            file.seek(0)
+            pickle.dump(roleReact_db, file)
+
+    return roleReact_db
 
 def add_role(messageID, reaction, role):
-    roleReact_db = read_roles() 
+    roleReact_db = load_roles() 
     if not roleReact_db:
         roleReact_db = {}
 
@@ -29,10 +29,11 @@ def add_role(messageID, reaction, role):
     with open(ROLE_FILE, "wb") as file:
         roleReact_db[messageID][reaction] = role
         pickle.dump(roleReact_db, file)
-        print(roleReact_db)
+
+    cloudinary.uploader.upload(ROLE_FILE, resource_type='raw', public_id=ROLE_FILE, invalidate=True)
 
 def delete_reaction_role(messageID, reaction):
-    roleReact_db = read_roles()
+    roleReact_db = load_roles()
     if not roleReact_db:
         return("There are no role reactions set")
 
@@ -47,12 +48,13 @@ def delete_reaction_role(messageID, reaction):
 
     with open(ROLE_FILE, "wb") as file:
         pickle.dump(roleReact_db, file)
-        print(roleReact_db)
-        return("Done")
+
+    cloudinary.uploader.upload(ROLE_FILE, resource_type='raw', public_id=ROLE_FILE, invalidate=True)
+    return("Done")
 
 #Internal function for checking database for reaction based roles
 def find_role(messageID, reaction):
-    roleReact_db = read_roles()
+    roleReact_db = load_roles()
     if messageID in roleReact_db:
         if reaction in roleReact_db[messageID]:
             return roleReact_db[messageID][reaction]
