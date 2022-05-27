@@ -7,7 +7,7 @@ ROLE_FILE = "Roles.pickle"
 #Internal function for loading and returning the contents of the roles file
 def load_roles():
     try:
-        web_copy = cloudinary.api.resource("str", resource_type='raw')['url']
+        web_copy = cloudinary.api.resource(ROLE_FILE, resource_type='raw')['url']
         response = urllib.request.urlopen(web_copy)
         print(response)
         roleReact_db = pickle.load(response)
