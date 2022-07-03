@@ -172,36 +172,91 @@ class Other(commands.Cog):
             await ctx.send("No reaction roles set")
             return
 
-        else:
-            #Loop through message dictionaries in reactRoles
-            for a, b in reactRoles.items():
-                messageID_link = None
-                #loop through server channels to find matching message
-                for guild in self.bot.guilds:
-                    for channel in guild.text_channels:
-                        #Try to get message by ID
-                        try:
-                            messageID_link = await channel.fetch_message(a)
-                            break
-                        except (ValueError):
-                            continue
-                        except (discord.NotFound):
-                            continue
+        #Loop through message dictionaries in reactRoles
+        for a, b in reactRoles.items():
+            messageID_link = None
+            #loop through server channels to find matching message
+            for guild in self.bot.guilds:
+                for channel in guild.text_channels:
+                    #Try to get message by ID
+                    try:
+                        messageID_link = await channel.fetch_message(a)
+                        break
+                    except (ValueError):
+                        continue
+                    except (discord.NotFound):
+                        continue
 
-                #Display link to message if possible
-                if messageID_link:
-                    return_string += f"<{messageID_link.jump_url}>:\n"
+            #Display link to message if possible
+            if messageID_link:
+                return_string += f"<{messageID_link.jump_url}>:\n"
+            else:
+                return_string += f"{a}:\n"
+
+            #Loop through reactions for the current message
+            for x, y in b.items():
+                if (discord.utils.get(ctx.guild.roles, name=y)):
+                    return_string += f"        {x}: {y}\n"
                 else:
-                    return_string += f"{a}:\n"
-
-                #Loop through reactions for the current message
-                for x, y in b.items():
-                    if (discord.utils.get(ctx.guild.roles, name=y)):
-                        return_string += f"        {x}: {y}\n"
-                    else:
-                        return_string += f"        {x}: {y} | Does not exist\n"
+                    return_string += f"        {x}: {y} | Does not exist\n"
 
         await ctx.send(return_string)
+
+    @commands.command()
+    @developerCheck
+    async def setMessageProperty(self, ctx, messageID, newProperty):
+        """Adnims only. Sets a property to a message"""
+        if messageID.isdigit():
+            roles.add_property(messageID, newProperty)
+            await ctx.send(f"{newProperty} property set")
+        else:
+            await ctx.send("Invalid messageID")
+
+    @commands.command()
+    @developerCheck
+    async def unsetMessageProperty(self, ctx, messageID, newProperty):
+        """
+        Adnins only. Removes a property from a message
+        Using "ALL" as the property argument will remove all properties for the message
+        """
+        return_string = roles.delete_property(str(messageID), newProperty)
+        await ctx.send(return_string)
+
+    @commands.command()
+    #@developerCheck
+    async def listMessageProperties(self, ctx):
+        return_string = ""
+
+        properties = roles.load_properties()
+
+        if not properties:
+            await ctx.send("No properties set")
+            return
+
+        for a, b in properties.items():
+             #loop through server channels to find matching message
+            for guild in self.bot.guilds:
+                for channel in guild.text_channels:
+                    #Try to get message by ID
+                    try:
+                        messageID_link = await channel.fetch_message(a)
+                        break
+                    except (ValueError):
+                        continue
+                    except (discord.NotFound):
+                        continue
+
+            #Display link to message if possible
+            if messageID_link:
+                return_string += f"<{messageID_link.jump_url}>:\n"
+            else:
+                return_string += f"{a}:\n"
+
+            for x, y in b.items():
+                return_string += f"        {x}\n"
+
+        await ctx.send(return_string)
+
 
     # @commands.command()
     # async def cltest(self, ctx):
