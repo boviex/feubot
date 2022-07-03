@@ -5,7 +5,7 @@ from pickle import dump, load
 import pickle
 from functools import reduce
 import cloudinary, cloudinary.uploader, cloudinary.api, urllib
-import roles
+import messageManager as msgManager
 
 developerIDs = (91393737950777344, 171863408822452224, 146075481534365697)
 developerCheck = commands.check(lambda x: x.message.author.id in developerIDs)
@@ -146,7 +146,7 @@ class Other(commands.Cog):
     async def setReactionRole(self, ctx, messageID, role, reaction):
         """Admins only. Sets a reaction role on a specified message"""
         if messageID.isdigit():
-            roles.add_role(str(messageID), reaction, role)
+            msgManager.add_role(str(messageID), reaction, role)
             await ctx.send(f"{role} for {reaction} reaction set")
         else:
             await ctx.send("Invalid messageID")
@@ -158,7 +158,7 @@ class Other(commands.Cog):
         Admins only. Removes a specified reaction role from a specified message.
         Using "ALL" as the role argument will remove all reaction roles
         """
-        return_string = roles.delete_reaction_role(str(messageID), reaction)
+        return_string = msgManager.delete_reaction_role(str(messageID), reaction)
         await ctx.send(return_string)
 
     @commands.command()
@@ -166,7 +166,7 @@ class Other(commands.Cog):
         """Lists messages with role reactions set along with what roles and reactions are usable"""
         return_string = ""
 
-        reactRoles = roles.load_roles()
+        reactRoles = msgManager.load_roles()
 
         if not reactRoles:
             await ctx.send("No reaction roles set")
@@ -207,7 +207,7 @@ class Other(commands.Cog):
     async def setMessageProperty(self, ctx, messageID, newProperty):
         """Adnims only. Sets a property to a message"""
         if messageID.isdigit():
-            roles.add_property(messageID, newProperty)
+            msgManager.add_property(messageID, newProperty)
             await ctx.send(f"{newProperty} property set")
         else:
             await ctx.send("Invalid messageID")
@@ -219,7 +219,7 @@ class Other(commands.Cog):
         Adnins only. Removes a property from a message
         Using "ALL" as the property argument will remove all properties for the message
         """
-        return_string = roles.delete_property(str(messageID), newProperty)
+        return_string = msgManager.delete_property(str(messageID), newProperty)
         await ctx.send(return_string)
 
     @commands.command()
@@ -227,7 +227,7 @@ class Other(commands.Cog):
     async def listMessageProperties(self, ctx):
         return_string = ""
 
-        properties = roles.load_properties()
+        properties = msgManager.load_properties()
 
         if not properties:
             await ctx.send("No properties set")

@@ -8,7 +8,7 @@ from sys import argv
 # from feubotFormatter import FeubotFormatter
 from discord.ext.commands import DefaultHelpCommand
 
-import roles
+import messageManager as msgManager
 
 def setupBot(bot):
     import helpful, memes, reactions, other#, undelete
@@ -63,8 +63,8 @@ if __name__ == "__main__":
     async def on_raw_reaction_add(payload):
         messageID = payload.message_id
         reaction  = payload.emoji.name
-        role_name = roles.find_role(str(messageID), reaction)
-        msg_properties = roles.get_properties(str(messageID))
+        role_name = msgManager.find_role(str(messageID), reaction)
+        msg_properties = msgManager.get_properties(str(messageID))
 
         guild  = bot.get_guild(payload.guild_id)
         member = payload.member
@@ -78,7 +78,7 @@ if __name__ == "__main__":
         if role:
             #If roles are exclusive, remove all other roles from the user
             if "exclusiveRoles" in msg_properties:
-                reactRoles = roles.load_roles()[str(messageID)].values()
+                reactRoles = msgManager.load_roles()[str(messageID)].values()
                 for x in member.roles:
                     if x.name in reactRoles:
                         await member.remove_roles(x)
@@ -95,8 +95,8 @@ if __name__ == "__main__":
     async def on_raw_reaction_remove(payload):
         messageID = payload.message_id
         reaction  = payload.emoji.name
-        role_name = roles.find_role(str(messageID), reaction)
-        msg_properties = roles.get_properties(str(messageID))
+        role_name = msgManager.find_role(str(messageID), reaction)
+        msg_properties = msgManager.get_properties(str(messageID))
 
         guild  = bot.get_guild(payload.guild_id)
         #Use guild.get_member since payload.member is None on ReactionRemove
