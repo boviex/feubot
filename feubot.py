@@ -8,7 +8,7 @@ from sys import argv
 # from feubotFormatter import FeubotFormatter
 from discord.ext.commands import DefaultHelpCommand
 
-import roles
+import messageManager as msgManager
 
 def setupBot(bot):
     import helpful, memes, reactions, other#, undelete
@@ -62,30 +62,54 @@ if __name__ == "__main__":
     @bot.event
     async def on_raw_reaction_add(payload):
         messageID = payload.message_id
-        reaction = payload.emoji.name
+        reaction  = payload.emoji.name
+        role_name = msgManager.find_role(str(messageID), reaction)
+        msg_properties = msgManager.get_properties(str(messageID))
 
-        role_name = roles.find_role(str(messageID), reaction)
+        guild  = bot.get_guild(payload.guild_id)
+        member = payload.member
+        role   = discord.utils.get(guild.roles, name=role_name)
 
-        if role_name:
-            guild = discord.utils.find(lambda g : g.id == payload.guild_id, bot.guilds)
-            member = discord.utils.find(lambda m : m.id == payload.user_id, guild.members)
-            role = discord.utils.get(guild.roles, name=role_name)
-            if role:
-                await member.add_roles(role)
+        #Extra check for management uses
+        if member == guild.owner and "ignoreOwner" in msg_properties:
+            print("Ignoring owner")
+            return
+
+        if role:
+            #If roles are exclusive, remove all other roles from the user
+            if "exclusiveRoles" in msg_properties:
+                reactRoles = msgManager.load_roles()[str(messageID)].values()
+                for x in member.roles:
+                    if x.name in reactRoles:
+                        await member.remove_roles(x)
+
+                #Remove other reactions on the message from this user
+                message = await guild.get_channel(payload.channel_id).fetch_message(messageID)
+                for x in message.reactions:
+                    if x.emoji != reaction:
+                        await x.remove(member)
+
+            await member.add_roles(role)
 
     @bot.event
     async def on_raw_reaction_remove(payload):
         messageID = payload.message_id
-        reaction = payload.emoji.name
+        reaction  = payload.emoji.name
+        role_name = msgManager.find_role(str(messageID), reaction)
+        msg_properties = msgManager.get_properties(str(messageID))
 
-        role_name = roles.find_role(str(messageID), reaction)
+        guild  = bot.get_guild(payload.guild_id)
+        #Use guild.get_member since payload.member is None on ReactionRemove
+        member = guild.get_member(payload.user_id)
+        role   = discord.utils.get(guild.roles, name=role_name)
 
-        if role_name:
-            guild = discord.utils.find(lambda g : g.id == payload.guild_id, bot.guilds)
-            member = discord.utils.find(lambda m : m.id == payload.user_id, guild.members)
-            role = discord.utils.get(guild.roles, name=role_name)
-            if role:
-                await member.remove_roles(role)
+        #Extra check for management uses
+        if member == guild.owner and "ignoreOwner" in msg_properties:
+            print("Ignoring owner")
+            return
+
+        if role:
+            await member.remove_roles(role)
 
     @bot.add_listener
     async def on_command_error(ctx, error):
