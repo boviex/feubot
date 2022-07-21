@@ -186,6 +186,8 @@ class Other(commands.Cog):
                         continue
                     except (discord.NotFound):
                         continue
+                    except (discord.Forbidden):
+                        continue
 
             #Display link to message if possible
             if messageID_link:
@@ -244,6 +246,8 @@ class Other(commands.Cog):
                     except (ValueError):
                         continue
                     except (discord.NotFound):
+                        continue
+                    except (discord.Forbidden):
                         continue
 
             #Display link to message if possible
