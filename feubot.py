@@ -10,13 +10,13 @@ from discord.ext.commands import DefaultHelpCommand
 
 import messageManager as msgManager
 
-def setupBot(bot):
+async def setupBot(bot):
     import helpful, memes, reactions, other#, undelete
-    reactions.setup(bot)
-    memes.setup(bot)
-    helpful.setup(bot)
+    await reactions.setup(bot)
+    await memes.setup(bot)
+    await helpful.setup(bot)
     # undelete.setup(bot)
-    other.setup(bot)
+    await other.setup(bot)
     #TODO: Stuff like bot.other = bot.get_cog("Other") and such. Then initialize debug's "self" to be bot.
 
     bot.remove_command('debug')
