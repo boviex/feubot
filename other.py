@@ -271,5 +271,5 @@ class Other(commands.Cog):
     #         result = cloudinary.uploader.upload(filename, resource_type='raw', public_id=filename[2:], invalidate=True)
     #     print("saved!")
 
-def setup(bot):
+async def setup(bot):
     await bot.add_cog(Other(bot))

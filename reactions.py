@@ -142,5 +142,5 @@ class Reactions(bot.Cog):
         """for when someone posts cringe"""
         await ctx.send(file=discord.File("./awful.jpg"))
 
-def setup(bot):
+async def setup(bot):
     await bot.add_cog(Reactions(bot))

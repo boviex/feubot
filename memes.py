@@ -275,5 +275,5 @@ What the fuck did you just fucking say about me, you little bitch? I’ll have y
 {reaction}```""".format(person1=person1,person2=person2,ltr=ltr,rtl=rtl,reaction=reaction)
         await ctx.send(msg)
 
-def setup(bot):
+async def setup(bot):
     await bot.add_cog(Memes(bot))

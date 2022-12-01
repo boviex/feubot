@@ -91,6 +91,6 @@ class UndeleteCog(object):
 async def on_message_delete(msg):
     _cache.insert(msg)
 
-def setup(bot):
+async def setup(bot):
     await bot.add_cog(UndeleteCog(bot))
     bot.event(on_message_delete)
