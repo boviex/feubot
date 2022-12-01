@@ -53,6 +53,7 @@ if __name__ == "__main__":
 
     @bot.event
     async def on_ready():
+        setupBot(bot)
         print('Logged in as')
         print(bot.user.name)
         print(bot.user.id)
@@ -142,5 +143,5 @@ if __name__ == "__main__":
         token = open('./token').read().replace('\n','')
 
     bot.reload = lambda: setupBot(bot)
-    setupBot(bot)
+
     bot.run(token)
