@@ -143,4 +143,4 @@ class Reactions(bot.Cog):
         await ctx.send(file=discord.File("./awful.jpg"))
 
 def setup(bot):
-    bot.add_cog(Reactions(bot))
+    await bot.add_cog(Reactions(bot))

@@ -204,4 +204,4 @@ class Helpful(bot.Cog):
             # await ctx.send(msg.channel, '```I think you mean MUG```')
 
 def setup(bot):
-    bot.add_cog(Helpful(bot))
+    await bot.add_cog(Helpful(bot))

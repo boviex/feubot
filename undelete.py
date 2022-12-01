@@ -92,5 +92,5 @@ async def on_message_delete(msg):
     _cache.insert(msg)
 
 def setup(bot):
-    bot.add_cog(UndeleteCog(bot))
+    await bot.add_cog(UndeleteCog(bot))
     bot.event(on_message_delete)

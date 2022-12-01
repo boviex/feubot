@@ -276,4 +276,4 @@ What the fuck did you just fucking say about me, you little bitch? I’ll have y
         await ctx.send(msg)
 
 def setup(bot):
-    bot.add_cog(Memes(bot))
+    await bot.add_cog(Memes(bot))

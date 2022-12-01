@@ -272,4 +272,4 @@ class Other(commands.Cog):
     #     print("saved!")
 
 def setup(bot):
-    bot.add_cog(Other(bot))
+    await bot.add_cog(Other(bot))
