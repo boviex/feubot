@@ -43,7 +43,7 @@ async def setupBot(bot):
 
 if __name__ == "__main__":
 
-    intents = discord.Intents.default()
+    intents = discord.Intents.all()
     intents.members = True
 
     if "--debug" in argv:
@@ -53,7 +53,7 @@ if __name__ == "__main__":
 
     @bot.event
     async def on_ready():
-        setupBot(bot)
+        await setupBot(bot)
         print('Logged in as')
         print(bot.user.name)
         print(bot.user.id)
