@@ -142,5 +142,5 @@ if __name__ == "__main__":
         token = open('./token').read().replace('\n','')
 
     bot.reload = lambda: setupBot(bot)
-    await setupBot(bot)
+    setupBot(bot)
     bot.run(token)
