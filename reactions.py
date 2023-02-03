@@ -120,7 +120,7 @@ class Reactions(bot.Cog):
     @bot.command()
     async def approve(self, ctx, pass_context=True, hidden=True):
         pid = str(ctx.message.author.id)
-        if pid == 171863408822452224:
+        if pid == '171863408822452224':
             await ctx.send(file=discord.File('./approved.png'))
         elif pid == '378954025145466880':
             await ctx.send(file=discord.File('./Letha_Seal_of_Approval.png'))    
