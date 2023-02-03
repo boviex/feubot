@@ -122,7 +122,7 @@ class Reactions(bot.Cog):
         pid = str(ctx.message.author.id)
         if pid == 171863408822452224:
             await ctx.send(file=discord.File('./approved.png'))
-        elif pid == '59462571601702912':
+        elif pid == '378954025145466880':
             await ctx.send(file=discord.File('./Letha_Seal_of_Approval.png'))    
         else:
             await ctx.send(file=discord.File('./FEU_Seal.png'))
