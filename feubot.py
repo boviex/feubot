@@ -123,11 +123,12 @@ if __name__ == "__main__":
 
     @bot.add_listener
     async def on_message(message):
+        soldier_spellings = ['soldier', 'solider', 'soilder', 'solidier', 'soldeir']
         if message.channel.id == 746515160377851997: #prep_screen id
             bot_member = message.guild.get_member(bot.user.id)
             bot_role = discord.utils.get(message.guild.roles, name="Conscripter")
             if bot_role in bot_member.roles:
-                if "soldier" in message.content.lower():
+                if any(word in message.content.lower() for word in soldier_spellings):
                     role = discord.utils.get(message.guild.roles, name="Soldier")
                     await message.author.add_roles(role)
 
